@@ -88,7 +88,7 @@ class App extends StatelessWidget {
               ),
               const Background(height: 10),
 
-              /// Section 1
+              /// Section 3
               const Flexible(
                 flex: 1,
                 child: Stack(
@@ -106,7 +106,7 @@ class App extends StatelessWidget {
                   ],
                 ),
               ),
-              const Background(height: 40),
+              const Background(height: 50),
             ],
           ),
         ),
