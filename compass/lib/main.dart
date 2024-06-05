@@ -10,21 +10,55 @@ import 'package:compass/widgets/small_text.dart';
 import 'package:compass/widgets/large_text.dart';
 import 'package:compass/widgets/stick.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(App());
 }
 
-const int rotationAngle = 120;
-const double moving = -97;
-
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   App({super.key});
 
-  final dataMap = <String, double>{
-    "1": moving.abs(),
-    "2": 360 - moving.abs(),
-  };
+  var showPieChart = false;
+  var rotationAngle = 120.0;
+  var moving = 0.0;
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  /// ========== test code ==========
+  void onTapAction() {
+    setState(() {
+      widget.showPieChart = !widget.showPieChart;
+      widget.showPieChart ? startTimer() : stopTimer();
+    });
+  }
+
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    if (widget.showPieChart) {
+      setState(() {
+        widget.moving += 1;
+        widget.rotationAngle += 1;
+      });
+    }
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(
+      const Duration(milliseconds: 30),
+      onTick,
+    );
+  }
+
+  void stopTimer() {
+    timer.cancel();
+    widget.moving = 0.0;
+  }
+  /// ==============================
 
   @override
   Widget build(BuildContext context) {
@@ -36,42 +70,63 @@ class App extends StatelessWidget {
               /// Section 1
               Flexible(
                 flex: 5,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    /// background
-                    const Background(height: double.infinity),
+                child: GestureDetector(
+                  onTap: onTapAction,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      /// background
+                      const Background(height: double.infinity),
 
-                    /// inner circle
-                    const InnerCircle(),
+                      /// inner circle
+                      const InnerCircle(),
 
-                    /// small cross
-                    const Cross(
-                      size: 1.5,
-                      thick: 20,
-                    ),
+                      /// small cross
+                      const Cross(
+                        size: 1.5,
+                        thick: 20,
+                      ),
 
-                    /// large cross
-                    const Cross(
-                      size: 0.8,
-                      thick: 150,
-                    ),
+                      /// large cross
+                      const Cross(
+                        size: 0.8,
+                        thick: 150,
+                      ),
 
-                    /// display angle
-                    const Rotation(child: Angle()),
+                      /// display angle
+                      Rotation(
+                        rotationAngle: widget.rotationAngle,
+                        child: Angle(
+                          rotationAngle: widget.rotationAngle,
+                        ),
+                      ),
 
-                    /// stick
-                    const Stick(),
+                      /// stick
+                      const Stick(),
 
-                    /// outer circle
-                    const Rotation(child: OuterCircle()),
+                      /// outer circle
+                      Rotation(
+                        rotationAngle: widget.rotationAngle,
+                        child: const OuterCircle(),
+                      ),
 
-                    /// pie chart
-                    pieChart(dataMap: dataMap),
+                      /// pie chart
+                      if (widget.showPieChart)
+                        pieChart(
+                          dataMap: {
+                            '1': widget.moving.abs(),
+                            '2': 360 - widget.moving.abs(),
+                          },
+                          moving: widget.moving,
+                        ),
 
-                    /// direction
-                    const Rotation(child: Direction()),
-                  ],
+                      /// direction
+                      Rotation(
+                        rotationAngle: widget.rotationAngle,
+                        child: Direction(rotationAngle: widget.rotationAngle),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 

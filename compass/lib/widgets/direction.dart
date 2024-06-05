@@ -1,15 +1,17 @@
 import 'package:compass/color+.dart';
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
 
 class Direction extends StatelessWidget {
   const Direction({
     super.key,
+    required this.rotationAngle,
   });
+
+  final double rotationAngle;
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Stack(
       children: [
         SizedBox(
           width: 210,
@@ -19,14 +21,14 @@ class Direction extends StatelessWidget {
             children: [
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
-                child: Text(
+                child: const Text(
                   '북',
                   style: TextStyle(fontSize: 27, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
-                child: Text(
+                child: const Text(
                   '남',
                   style: TextStyle(fontSize: 27, color: CustomColors.white),
                 ),
@@ -42,14 +44,14 @@ class Direction extends StatelessWidget {
             children: [
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
-                child: Text(
+                child: const Text(
                   '서',
                   style: TextStyle(fontSize: 27, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
-                child: Text(
+                child: const Text(
                   '동',
                   style: TextStyle(fontSize: 27, color: CustomColors.white),
                 ),

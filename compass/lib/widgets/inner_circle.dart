@@ -11,9 +11,9 @@ class InnerCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: CustomColors.grey.withOpacity(0.15),
+        color: CustomColors.grey,
       ),
       margin: const EdgeInsets.all(153),
     );

@@ -1,8 +1,14 @@
+import 'package:compass/color+.dart';
 import 'package:flutter/material.dart';
 import 'package:compass/main.dart';
 
 class Angle extends StatelessWidget {
-  const Angle({super.key});
+  const Angle({
+    super.key,
+    required this.rotationAngle,
+  });
+
+  final double rotationAngle;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class Angle extends StatelessWidget {
                       child: Text(
                         '${i * 30}',
                         style: const TextStyle(
-                          color: Colors.white70,
+                          color: CustomColors.grey2,
                           fontSize: 16,
                         ),
                       )),
@@ -32,7 +38,7 @@ class Angle extends StatelessWidget {
                     child: Text(
                       '${i * 30 + 180}',
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: CustomColors.grey2,
                         fontSize: 16,
                       ),
                     ),

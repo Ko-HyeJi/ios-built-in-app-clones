@@ -8,17 +8,19 @@ class pieChart extends StatelessWidget {
   const pieChart({
     super.key,
     required this.dataMap,
+    required this.moving,
   });
 
   final Map<String, double> dataMap;
+  final double moving;
 
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
-      turns: const AlwaysStoppedAnimation(
+      turns: AlwaysStoppedAnimation(
           moving < 0 ? moving / 360 : 0),
       child: SizedBox(
-        width: 210,
+        width: 208,
         child: PieChart(
           dataMap: dataMap,
           chartType: ChartType.ring,

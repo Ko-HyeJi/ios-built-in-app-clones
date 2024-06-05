@@ -19,12 +19,12 @@ class Cross extends StatelessWidget {
         Container(
           width: thick,
           height: size,
-          color: CustomColors.grey,
+          color: CustomColors.grey2,
         ),
         Container(
           width: size,
           height: thick,
-          color: CustomColors.grey,
+          color: CustomColors.grey2,
         ),
       ],
     );
