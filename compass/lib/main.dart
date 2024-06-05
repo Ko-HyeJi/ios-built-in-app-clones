@@ -15,8 +15,8 @@ void main() {
   runApp(App());
 }
 
-const int rotationAngle = 0;
-const double moving = -90;
+const int rotationAngle = 120;
+const double moving = -97;
 
 class App extends StatelessWidget {
   App({super.key});
