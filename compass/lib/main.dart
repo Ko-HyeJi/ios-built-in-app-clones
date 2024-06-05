@@ -10,7 +10,7 @@ import 'package:compass/widgets/small_text.dart';
 import 'package:compass/widgets/large_text.dart';
 import 'package:compass/widgets/stick.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:flutter_compass/flutter_compass.dart';
 
 void main() {
   runApp(App());
@@ -20,7 +20,6 @@ class App extends StatefulWidget {
   App({super.key});
 
   var showPieChart = false;
-  var rotationAngle = 120.0;
   var moving = 0.0;
 
   @override
@@ -28,37 +27,52 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  /// ========== test code ==========
-  void onTapAction() {
-    setState(() {
-      widget.showPieChart = !widget.showPieChart;
-      widget.showPieChart ? startTimer() : stopTimer();
+  double? heading = 0;
+  double startPoint = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterCompass.events!.listen((event) {
+      setState(() {
+        heading = event.heading;
+        if (widget.showPieChart) {
+          widget.moving = heading!.toDouble() - startPoint;
+        }
+      });
     });
   }
 
-  late Timer timer;
+  void onTapAction() {
+    setState(() {
+      if (!widget.showPieChart) {
+        startPoint = heading!.toDouble();
+      } else {
+        startPoint = 0;
+      }
+      widget.showPieChart = !widget.showPieChart;
+    });
+  }
 
-  void onTick(Timer timer) {
-    if (widget.showPieChart) {
-      setState(() {
-        widget.moving += 1;
-        widget.rotationAngle += 1;
-      });
+  String getDirection(int angle) {
+    if (angle >= 338 || angle < 23) {
+      return '북';
+    } else if (angle >= 23 && angle < 68) {
+      return '북동';
+    } else if (angle >= 68 && angle < 113) {
+      return '동';
+    } else if (angle >= 113 && angle < 158) {
+      return '남동';
+    } else if (angle >= 158 && angle < 203) {
+      return '남';
+    } else if (angle >= 203 && angle < 248) {
+      return '남서';
+    } else if (angle >= 248 && angle < 293) {
+      return '서';
+    } else {
+      return '북서';
     }
   }
-
-  void startTimer() {
-    timer = Timer.periodic(
-      const Duration(milliseconds: 30),
-      onTick,
-    );
-  }
-
-  void stopTimer() {
-    timer.cancel();
-    widget.moving = 0.0;
-  }
-  /// ==============================
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +109,9 @@ class _AppState extends State<App> {
 
                       /// display angle
                       Rotation(
-                        rotationAngle: widget.rotationAngle,
+                        rotationAngle: (360 - heading!.toDouble()),
                         child: Angle(
-                          rotationAngle: widget.rotationAngle,
+                          rotationAngle: (360 - heading!.toDouble()),
                         ),
                       ),
 
@@ -106,7 +120,7 @@ class _AppState extends State<App> {
 
                       /// outer circle
                       Rotation(
-                        rotationAngle: widget.rotationAngle,
+                        rotationAngle: (360 - heading!.toDouble()),
                         child: const OuterCircle(),
                       ),
 
@@ -122,8 +136,9 @@ class _AppState extends State<App> {
 
                       /// direction
                       Rotation(
-                        rotationAngle: widget.rotationAngle,
-                        child: Direction(rotationAngle: widget.rotationAngle),
+                        rotationAngle: (360 - heading!.toDouble()),
+                        child: Direction(
+                            rotationAngle: (360 - heading!.toDouble())),
                       ),
                     ],
                   ),
@@ -131,13 +146,13 @@ class _AppState extends State<App> {
               ),
 
               /// Section 2
-              const Flexible(
+              Flexible(
                 flex: 1,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     Background(height: double.infinity),
-                    LargeText(text: '240° 남서'),
+                    LargeText(text: '${heading!.round().toString()}° ${getDirection(heading!.round())}'),
                   ],
                 ),
               ),

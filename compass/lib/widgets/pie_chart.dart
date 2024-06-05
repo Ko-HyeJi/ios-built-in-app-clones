@@ -17,8 +17,7 @@ class pieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
-      turns: AlwaysStoppedAnimation(
-          moving < 0 ? moving / 360 : 0),
+      turns: AlwaysStoppedAnimation(moving > 0 ? -moving / 360 : 0),
       child: SizedBox(
         width: 208,
         child: PieChart(
