@@ -14,8 +14,8 @@ class Direction extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          width: 210,
-          height: 210,
+          width: 220,
+          height: 220,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -23,22 +23,22 @@ class Direction extends StatelessWidget {
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
                 child: const Text(
                   '북',
-                  style: TextStyle(fontSize: 27, color: CustomColors.white),
+                  style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
                 child: const Text(
                   '남',
-                  style: TextStyle(fontSize: 27, color: CustomColors.white),
+                  style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
             ],
           ),
         ),
         SizedBox(
-          width: 210,
-          height: 210,
+          width: 220,
+          height: 220,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -46,14 +46,14 @@ class Direction extends StatelessWidget {
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
                 child: const Text(
                   '서',
-                  style: TextStyle(fontSize: 27, color: CustomColors.white),
+                  style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
                 turns: AlwaysStoppedAnimation(-rotationAngle / 360),
                 child: const Text(
                   '동',
-                  style: TextStyle(fontSize: 27, color: CustomColors.white),
+                  style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
             ],

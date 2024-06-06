@@ -34,6 +34,9 @@ dependencies:
   pie_chart: ^5.4.0
   flutter_compass: '^0.7.0'
   permission_handler: ^11.3.1
+  sensors_plus: ^5.0.1
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
