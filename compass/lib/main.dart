@@ -71,21 +71,17 @@ class _CompassAppState extends State<CompassApp> {
 
         /// calculate moving
         if (_showPieChart) {
-          if (startPoint > heading && startPoint > 180 && heading < 180) {
-            moving = -((startPoint - 180) + (180 - heading));
-          } else if (startPoint < heading && startPoint < 180 && heading > 180) {
-            moving = (180 - startPoint) + (heading - 180);
-          } else if (startPoint > 180 && heading < 180) {
+          if ((startPoint > 180 && heading < 180) && moving > 0) {
             moving = (360 - startPoint) + heading;
-          } else if (startPoint < 180 && heading > 180) {
-            moving = -((360 - heading) + startPoint);
+          } else if ((startPoint < 180 && heading > 180) && moving < 0) {
+            moving = -startPoint + (heading - 360);
           } else {
             moving = heading - startPoint;
           }
 
-          // if (moving.abs() > 180) {
-          //   moving = -moving;
-          // }
+          if (moving.abs() > 180) {
+            moving = -moving;
+          }
         }
       }
     });
@@ -184,9 +180,6 @@ class _CompassAppState extends State<CompassApp> {
                         rotationAngle: (heading),
                         child: Direction(rotationAngle: (heading)),
                       ),
-
-                      /// TODO: 디버깅 지워야 함
-                      Text(moving.toString(), style: TextStyle(color: Colors.white, fontSize: 50),),
                     ],
                   ),
                 ),
