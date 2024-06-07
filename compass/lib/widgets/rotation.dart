@@ -9,12 +9,12 @@ class Rotation extends StatelessWidget {
   });
 
   final Widget child;
-  final double rotationAngle;
+  final int rotationAngle;
 
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
-      turns: AlwaysStoppedAnimation(rotationAngle / 360),
+      turns: AlwaysStoppedAnimation((360 - rotationAngle) / 360),
       child: child,
     );
   }

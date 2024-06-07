@@ -7,7 +7,7 @@ class Direction extends StatelessWidget {
     required this.rotationAngle,
   });
 
-  final double rotationAngle;
+  final int rotationAngle;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +20,14 @@ class Direction extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RotationTransition(
-                turns: AlwaysStoppedAnimation(-rotationAngle / 360),
+                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
                 child: const Text(
                   '북',
                   style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
-                turns: AlwaysStoppedAnimation(-rotationAngle / 360),
+                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
                 child: const Text(
                   '남',
                   style: TextStyle(fontSize: 25, color: CustomColors.white),
@@ -43,14 +43,14 @@ class Direction extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RotationTransition(
-                turns: AlwaysStoppedAnimation(-rotationAngle / 360),
+                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
                 child: const Text(
                   '서',
                   style: TextStyle(fontSize: 25, color: CustomColors.white),
                 ),
               ),
               RotationTransition(
-                turns: AlwaysStoppedAnimation(-rotationAngle / 360),
+                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
                 child: const Text(
                   '동',
                   style: TextStyle(fontSize: 25, color: CustomColors.white),

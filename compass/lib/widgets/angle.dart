@@ -1,6 +1,5 @@
 import 'package:compass/color+.dart';
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
 
 class Angle extends StatelessWidget {
   const Angle({
@@ -8,7 +7,7 @@ class Angle extends StatelessWidget {
     required this.rotationAngle,
   });
 
-  final double rotationAngle;
+  final int rotationAngle;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class Angle extends StatelessWidget {
                 children: [
                   RotationTransition(
                       turns: AlwaysStoppedAnimation(
-                          -30 * (i + (rotationAngle / 30)) / 360),
+                          -30 * (i + ((360 - rotationAngle) / 30)) / 360),
                       child: Text(
                         '${i * 30}',
                         style: const TextStyle(
@@ -34,7 +33,7 @@ class Angle extends StatelessWidget {
                       )),
                   RotationTransition(
                     turns: AlwaysStoppedAnimation(
-                        -30 * (i + (rotationAngle / 30)) / 360),
+                        -30 * (i + ((360 - rotationAngle) / 30)) / 360),
                     child: Text(
                       '${i * 30 + 180}',
                       style: const TextStyle(

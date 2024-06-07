@@ -12,7 +12,7 @@ class pieChart extends StatelessWidget {
   });
 
   final Map<String, double> dataMap;
-  final double moving;
+  final int moving;
 
   @override
   Widget build(BuildContext context) {
