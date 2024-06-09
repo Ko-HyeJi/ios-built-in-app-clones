@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
-
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class InnerCircle extends StatelessWidget {
   const InnerCircle({

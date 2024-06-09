@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
-
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class SmallText extends StatelessWidget {
   const SmallText({

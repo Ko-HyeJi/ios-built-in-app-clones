@@ -1,5 +1,5 @@
-import 'package:compass/color+.dart';
 import 'package:flutter/material.dart';
+import 'package:compass/color+.dart';
 
 class Angle extends StatelessWidget {
   const Angle({
@@ -8,6 +8,9 @@ class Angle extends StatelessWidget {
   });
 
   final int rotationAngle;
+  static const _fontColor = CustomColors.white;
+  static const _fontSize = 15.0;
+  static const _fontWeight = FontWeight.w500;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class Angle extends StatelessWidget {
       children: [
         for (var i = 0; i < 6; i++)
           SizedBox(
-            height: 350,
+            height: 345,
             child: RotationTransition(
               turns: AlwaysStoppedAnimation(i * 30 / 360),
               child: Column(
@@ -27,8 +30,9 @@ class Angle extends StatelessWidget {
                       child: Text(
                         '${i * 30}',
                         style: const TextStyle(
-                          color: CustomColors.grey2,
-                          fontSize: 16,
+                          color: _fontColor,
+                          fontSize: _fontSize,
+                          fontWeight: _fontWeight,
                         ),
                       )),
                   RotationTransition(
@@ -37,8 +41,9 @@ class Angle extends StatelessWidget {
                     child: Text(
                       '${i * 30 + 180}',
                       style: const TextStyle(
-                        color: CustomColors.grey2,
-                        fontSize: 16,
+                        color: _fontColor,
+                        fontSize: _fontSize,
+                        fontWeight: _fontWeight,
                       ),
                     ),
                   ),

@@ -1,7 +1,6 @@
 import 'package:compass/widgets/rotation.dart';
 import 'package:flutter/material.dart';
-
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class StartPoint extends StatelessWidget {
   const StartPoint({
@@ -18,7 +17,7 @@ class StartPoint extends StatelessWidget {
     return Rotation(
       rotationAngle: (moving),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 57),
+        margin: const EdgeInsets.symmetric(vertical: 56),
         child: Column(
           children: [
             RotationTransition(
@@ -27,16 +26,16 @@ class StartPoint extends StatelessWidget {
                 startPoint.toInt().toString(),
                 style: const TextStyle(
                     color: CustomColors.white,
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             Container(
-              width: 5,
-              height: 40,
+              width: 2.5,
+              height: 45,
               color: CustomColors.white,
             ),
           ],

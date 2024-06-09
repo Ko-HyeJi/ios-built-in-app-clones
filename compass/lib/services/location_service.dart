@@ -1,7 +1,6 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../models/geo_data_model.dart';
+import 'package:compass/models/geo_data_model.dart';
 
 class LocationService {
   Future<GeoData> getGeoData() async {
@@ -16,6 +15,7 @@ class LocationService {
     Position position = await Geolocator.getCurrentPosition();
     String address =
         await _getPlacemarks(position.latitude, position.longitude);
+
     return GeoData(
       latitude: position.latitude,
       longitude: position.longitude,
@@ -24,11 +24,12 @@ class LocationService {
     );
   }
 
-  Future<String> _getPlacemarks(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    final address =
-        '${placemarks.reversed.last.administrativeArea ?? ' - '}, ${placemarks.reversed.last.locality ?? ' - '}';
-    return address;
+  Future<String> _getPlacemarks(double latitude, double longitude) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+    final administrativeArea = placemarks.reversed.last.administrativeArea ?? '';
+    final locality = placemarks.reversed.last.locality ?? '';
+
+    return '$administrativeArea, $locality';
   }
 
   String convertLatLng(double decimal, bool isLat) {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
-
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class Stick extends StatelessWidget {
   const Stick({
@@ -13,10 +11,10 @@ class Stick extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 5,
+          width: 3.5,
           height: 60,
           color: CustomColors.white,
-          margin: const EdgeInsets.all(76),
+          margin: const EdgeInsets.all(77),
         ),
       ],
     );

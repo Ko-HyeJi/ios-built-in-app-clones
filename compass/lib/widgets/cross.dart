@@ -1,5 +1,5 @@
-import 'package:compass/color+.dart';
 import 'package:flutter/material.dart';
+import 'package:compass/color+.dart';
 
 class Cross extends StatelessWidget {
   const Cross({

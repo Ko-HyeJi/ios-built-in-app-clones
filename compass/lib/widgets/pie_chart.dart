@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
 import 'package:pie_chart/pie_chart.dart';
-
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class pieChart extends StatelessWidget {
   const pieChart({

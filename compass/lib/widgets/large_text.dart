@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class LargeText extends StatelessWidget {
   const LargeText({
@@ -10,6 +10,9 @@ class LargeText extends StatelessWidget {
 
   final String text1;
   final String text2;
+  static const _fontSize = 70.0;
+  static const _fontWeight = FontWeight.w200;
+  static const _fontColor = CustomColors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +27,9 @@ class LargeText extends StatelessWidget {
               Text(
                 text1,
                 style: const TextStyle(
-                  fontSize: 70,
-                  fontWeight: FontWeight.w200,
-                  color: CustomColors.white,
+                  fontSize: _fontSize,
+                  fontWeight: _fontWeight,
+                  color: _fontColor,
                 ),
               ),
             ],
@@ -41,9 +44,9 @@ class LargeText extends StatelessWidget {
               Text(
                 text2,
                 style: const TextStyle(
-                  fontSize: 70,
-                  fontWeight: FontWeight.w200,
-                  color: CustomColors.white,
+                  fontSize: _fontSize,
+                  fontWeight: _fontWeight,
+                  color: _fontColor,
                 ),
               ),
             ],

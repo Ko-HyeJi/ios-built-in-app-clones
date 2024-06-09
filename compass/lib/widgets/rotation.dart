@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:compass/main.dart';
 
 class Rotation extends StatelessWidget {
   const Rotation({

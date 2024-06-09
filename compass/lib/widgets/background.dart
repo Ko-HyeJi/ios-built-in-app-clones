@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class Background extends StatelessWidget {
   const Background({

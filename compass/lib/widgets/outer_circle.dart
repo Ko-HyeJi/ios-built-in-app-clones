@@ -1,35 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-import '../color+.dart';
+import 'package:compass/color+.dart';
 
 class OuterCircle extends StatelessWidget {
   const OuterCircle({
     super.key,
   });
 
+  static const _thin = [0.75, 3.85];
+  static const _thick = [2.5, 61.5];
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
-          height: 250,
-          width: 250,
+          height: 245,
+          width: 245,
           child: DottedBorder(
             borderType: BorderType.Circle,
-            strokeWidth: 20,
+            strokeWidth: 17.5,
             color: CustomColors.white,
-            dashPattern: const [1, 3.5],
+            dashPattern: _thin,
             child: const ClipRRect(),
           ),
         ),
         SizedBox(
-          height: 250,
-          width: 250,
+          height: 245,
+          width: 245,
           child: DottedBorder(
             borderType: BorderType.Circle,
-            strokeWidth: 20,
+            strokeWidth: 17.5,
             color: CustomColors.white,
-            dashPattern: const [2.5, 63],
+            dashPattern: _thick,
             child: const ClipRRect(),
           ),
         ),

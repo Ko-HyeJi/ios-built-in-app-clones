@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:compass/services/location_service.dart';
 import 'package:compass/widgets/background.dart';
 import 'package:compass/widgets/direction.dart';
@@ -11,13 +14,8 @@ import 'package:compass/widgets/small_text.dart';
 import 'package:compass/widgets/large_text.dart';
 import 'package:compass/widgets/start_point.dart';
 import 'package:compass/widgets/stick.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_compass/flutter_compass.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-
-import 'models/geo_data_model.dart';
+import 'package:compass/models/geo_data_model.dart';
 
 void main() {
   runApp(const CompassApp());
@@ -32,12 +30,12 @@ class CompassApp extends StatefulWidget {
 
 class _CompassAppState extends State<CompassApp> {
   final locationService = LocationService();
-  GeoData? geoData;
-  List<int> accelerometer = [0, 0];
+  GeoData? _geoData;
+  final List<double> _accelerometer = [0.0, 0.0];
   bool _showPieChart = false;
-  int moving = 0;
   int heading = 0;
-  int startPoint = 0;
+  int moving = 0;
+  int startingPoint = 0;
 
   @override
   void initState() {
@@ -45,17 +43,15 @@ class _CompassAppState extends State<CompassApp> {
 
     locationService.getGeoData().then((value) {
       setState(() {
-        geoData = value;
+        _geoData = value;
       });
     });
 
     accelerometerEventStream().listen((AccelerometerEvent event) {
-      final bf = accelerometer;
-      accelerometer[0] = event.x.toInt();
-      accelerometer[1] = event.y.toInt();
-      if ((bf[0] != accelerometer[0]) || (bf[1] != accelerometer[1])) {
-        setState(() {});
-      }
+      setState(() {
+        _accelerometer[0] = event.x;
+        _accelerometer[1] = event.y;
+      });
     });
 
     FlutterCompass.events!.listen((event) {
@@ -66,17 +62,17 @@ class _CompassAppState extends State<CompassApp> {
 
         /// Haptic Feedback
         if (heading % 30 == 0) {
-          HapticFeedback.lightImpact();
+          HapticFeedback.mediumImpact();
         }
 
         /// calculate moving
         if (_showPieChart) {
-          if ((startPoint > 180 && heading < 180) && moving > 0) {
-            moving = (360 - startPoint) + heading;
-          } else if ((startPoint < 180 && heading > 180) && moving < 0) {
-            moving = -startPoint + (heading - 360);
+          if ((startingPoint > 180 && heading < 180) && moving > 0) {
+            moving = (360 - startingPoint) + heading;
+          } else if ((startingPoint < 180 && heading > 180) && moving < 0) {
+            moving = -startingPoint + (heading - 360);
           } else {
-            moving = heading - startPoint;
+            moving = heading - startingPoint;
           }
 
           if (moving.abs() > 180) {
@@ -90,9 +86,9 @@ class _CompassAppState extends State<CompassApp> {
   void _onTapAction() {
     setState(() {
       if (!_showPieChart) {
-        startPoint = heading;
+        startingPoint = heading;
       } else {
-        startPoint = 0;
+        startingPoint = 0;
         moving = 0;
       }
       _showPieChart = !_showPieChart;
@@ -120,8 +116,8 @@ class _CompassAppState extends State<CompassApp> {
                       /// inner circle
                       Transform.translate(
                         offset: Offset(
-                          -accelerometer[0] * 2,
-                          accelerometer[1] * 2,
+                          _accelerometer[0] * -2,
+                          _accelerometer[1] * 2,
                         ),
                         child: const InnerCircle(),
                       ),
@@ -129,8 +125,8 @@ class _CompassAppState extends State<CompassApp> {
                       /// small cross
                       Transform.translate(
                         offset: Offset(
-                          -accelerometer[0] * 2,
-                          accelerometer[1] * 2,
+                          _accelerometer[0] * -2,
+                          _accelerometer[1] * 2,
                         ),
                         child: const Cross(
                           size: 0.8,
@@ -141,7 +137,7 @@ class _CompassAppState extends State<CompassApp> {
                       /// large cross
                       const Cross(
                         size: 0.8,
-                        thick: 150,
+                        thick: 145,
                       ),
 
                       /// display angle
@@ -157,7 +153,7 @@ class _CompassAppState extends State<CompassApp> {
 
                       /// start point
                       if (_showPieChart)
-                        StartPoint(moving: moving, startPoint: startPoint),
+                        StartPoint(moving: moving, startPoint: startingPoint),
 
                       /// outer circle
                       Rotation(
@@ -208,15 +204,15 @@ class _CompassAppState extends State<CompassApp> {
                   alignment: Alignment.center,
                   children: [
                     const Background(height: double.infinity),
-                    if (geoData != null)
+                    if (_geoData != null)
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SmallText(
                               text:
-                                  '${locationService.convertLatLng(geoData!.latitude, true)} ${locationService.convertLatLng(geoData!.longitude, false)}'),
-                          SmallText(text: geoData!.address),
-                          SmallText(text: '고도 ${geoData!.altitude.ceil()}m'),
+                                  '${locationService.convertLatLng(_geoData!.latitude, true)} ${locationService.convertLatLng(_geoData!.longitude, false)}'),
+                          SmallText(text: _geoData!.address),
+                          SmallText(text: '고도 ${_geoData!.altitude.ceil()}m'),
                         ],
                       ),
                   ],
