@@ -7,7 +7,7 @@ class OuterCircle extends StatelessWidget {
     super.key,
   });
 
-  static const _thin = [0.75, 3.85];
+  static const _thin = [0.9142857143, 0.9142857143 * 4];
   static const _thick = [2.5, 61.5];
 
   @override

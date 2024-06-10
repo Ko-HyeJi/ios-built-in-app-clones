@@ -48,12 +48,11 @@ class _CompassAppState extends State<CompassApp> {
     });
 
     accelerometerEventStream().listen((AccelerometerEvent event) {
-      final bf = _accelerometer;
-      _accelerometer[0] = event.x.toInt();
-      _accelerometer[1] = event.y.toInt();
-
-      if (_accelerometer[0] != bf[0] || _accelerometer[1] != bf[1]) {
-        setState(() {});
+      if (event.x.toInt() != _accelerometer[0] || event.y.toInt() != _accelerometer[1]) {
+        setState(() {
+          _accelerometer[0] = event.x.toInt();
+          _accelerometer[1] = event.y.toInt();
+        });
       }
     });
 
@@ -203,7 +202,7 @@ class _CompassAppState extends State<CompassApp> {
                           SmallText(
                               text:
                                   '${_locationService.convertLatLng(_geoData!.latitude, true)} ${_locationService.convertLatLng(_geoData!.longitude, false)}'),
-                          SmallText(text: _geoData!.address),
+                          SmallText(text: '${_geoData!.administrativeArea}, ${_geoData!.locality}'),
                           SmallText(text: '고도 ${_geoData!.altitude.ceil()}m'),
                         ],
                       ),

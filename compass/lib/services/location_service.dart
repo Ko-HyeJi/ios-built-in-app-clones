@@ -13,23 +13,24 @@ class LocationService {
     }
 
     Position position = await Geolocator.getCurrentPosition();
-    String address =
+    List<String> placemarks =
         await _getPlacemarks(position.latitude, position.longitude);
 
     return GeoData(
       latitude: position.latitude,
       longitude: position.longitude,
       altitude: position.altitude,
-      address: address,
+      administrativeArea: placemarks[0],
+      locality: placemarks[1],
     );
   }
 
-  Future<String> _getPlacemarks(double latitude, double longitude) async {
+  Future<List<String>> _getPlacemarks(double latitude, double longitude) async {
     List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
     final administrativeArea = placemarks.reversed.last.administrativeArea ?? '';
     final locality = placemarks.reversed.last.locality ?? '';
 
-    return '$administrativeArea, $locality';
+    return [administrativeArea, locality];
   }
 
   String convertLatLng(double decimal, bool isLat) {
