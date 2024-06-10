@@ -30,7 +30,7 @@ class CompassApp extends StatefulWidget {
 
 class _CompassAppState extends State<CompassApp> {
   final _locationService = LocationService();
-  final List<int> _accelerometer = [0, 0];
+  final List<double> _accelerometer = [0.0, 0.0];
   GeoData? _geoData;
   bool _showPieChart = false;
   int _heading = 0;
@@ -47,14 +47,12 @@ class _CompassAppState extends State<CompassApp> {
       });
     });
 
-    accelerometerEventStream().listen((AccelerometerEvent event) {
-      if (event.x.toInt() != _accelerometer[0] ||
-          event.y.toInt() != _accelerometer[1]) {
-        setState(() {
-          _accelerometer[0] = event.x.toInt();
-          _accelerometer[1] = event.y.toInt();
-        });
-      }
+    accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
+        .listen((AccelerometerEvent event) {
+      setState(() {
+        _accelerometer[0] = event.x;
+        _accelerometer[1] = event.y;
+      });
     });
 
     FlutterCompass.events!.listen((event) {
