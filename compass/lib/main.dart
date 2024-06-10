@@ -29,54 +29,57 @@ class CompassApp extends StatefulWidget {
 }
 
 class _CompassAppState extends State<CompassApp> {
-  final locationService = LocationService();
+  final _locationService = LocationService();
+  final List<int> _accelerometer = [0, 0];
   GeoData? _geoData;
-  final List<double> _accelerometer = [0.0, 0.0];
   bool _showPieChart = false;
-  int heading = 0;
-  int moving = 0;
-  int startingPoint = 0;
+  int _heading = 0;
+  int _moving = 0;
+  int _startingPoint = 0;
 
   @override
   void initState() {
     super.initState();
 
-    locationService.getGeoData().then((value) {
+    _locationService.getGeoData().then((value) {
       setState(() {
         _geoData = value;
       });
     });
 
     accelerometerEventStream().listen((AccelerometerEvent event) {
-      setState(() {
-        _accelerometer[0] = event.x;
-        _accelerometer[1] = event.y;
-      });
+      final bf = _accelerometer;
+      _accelerometer[0] = event.x.toInt();
+      _accelerometer[1] = event.y.toInt();
+
+      if (_accelerometer[0] != bf[0] || _accelerometer[1] != bf[1]) {
+        setState(() {});
+      }
     });
 
     FlutterCompass.events!.listen((event) {
-      if (event.heading!.toInt() != heading) {
+      if (event.heading!.toInt() != _heading) {
         setState(() {
-          heading = event.heading!.toInt();
+          _heading = event.heading!.toInt();
         });
 
         /// haptic feedback
-        if (heading % 30 == 0) {
+        if (_heading % 30 == 0) {
           HapticFeedback.mediumImpact();
         }
 
         /// calculate moving
         if (_showPieChart) {
-          if ((startingPoint > 180 && heading < 180) && moving > 0) {
-            moving = (360 - startingPoint) + heading;
-          } else if ((startingPoint < 180 && heading > 180) && moving < 0) {
-            moving = -startingPoint + (heading - 360);
+          if ((_startingPoint > 180 && _heading < 180) && _moving > 0) {
+            _moving = (360 - _startingPoint) + _heading;
+          } else if ((_startingPoint < 180 && _heading > 180) && _moving < 0) {
+            _moving = -_startingPoint + (_heading - 360);
           } else {
-            moving = heading - startingPoint;
+            _moving = _heading - _startingPoint;
           }
 
-          if (moving.abs() > 180) {
-            moving = -moving;
+          if (_moving.abs() > 180) {
+            _moving = -_moving;
           }
         }
       }
@@ -86,10 +89,10 @@ class _CompassAppState extends State<CompassApp> {
   void _onTapAction() {
     setState(() {
       if (!_showPieChart) {
-        startingPoint = heading;
+        _startingPoint = _heading;
       } else {
-        startingPoint = 0;
-        moving = 0;
+        _startingPoint = 0;
+        _moving = 0;
       }
       _showPieChart = !_showPieChart;
     });
@@ -132,16 +135,19 @@ class _CompassAppState extends State<CompassApp> {
                       if (_showPieChart)
                         Movement(
                           dataMap: {
-                            '1': moving.abs().toDouble(),
-                            '2': 360 - moving.abs().toDouble(),
+                            '1': _moving.abs().toDouble(),
+                            '2': 360 - _moving.abs().toDouble(),
                           },
-                          moving: moving,
+                          moving: _moving,
                         ),
 
                       /// rotation area
                       Rotation(
-                        rotationAngle: heading,
-                        child: _RotationArea(rotationAngle: heading),
+                        rotationAngle: _heading,
+                        child: _RotationArea(
+                          rotationAngle: _heading,
+                          showPieChart: _showPieChart,
+                        ),
                       ),
 
                       /// stick
@@ -152,9 +158,15 @@ class _CompassAppState extends State<CompassApp> {
 
                       /// start point
                       if (_showPieChart)
-                        StartPoint(
-                          moving: moving,
-                          startingPoint: startingPoint,
+                        Rotation(
+                          rotationAngle: _moving,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 60),
+                            child: StartPoint(
+                              moving: _moving,
+                              startingPoint: _startingPoint,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -169,8 +181,8 @@ class _CompassAppState extends State<CompassApp> {
                   children: [
                     const Background(height: double.infinity),
                     LargeText(
-                      text1: '${heading.toString()}°',
-                      text2: locationService.getDirection(heading),
+                      text1: '${_heading.toString()}°',
+                      text2: _locationService.getDirection(_heading),
                     ),
                   ],
                 ),
@@ -190,7 +202,7 @@ class _CompassAppState extends State<CompassApp> {
                         children: [
                           SmallText(
                               text:
-                                  '${locationService.convertLatLng(_geoData!.latitude, true)} ${locationService.convertLatLng(_geoData!.longitude, false)}'),
+                                  '${_locationService.convertLatLng(_geoData!.latitude, true)} ${_locationService.convertLatLng(_geoData!.longitude, false)}'),
                           SmallText(text: _geoData!.address),
                           SmallText(text: '고도 ${_geoData!.altitude.ceil()}m'),
                         ],
@@ -209,11 +221,12 @@ class _CompassAppState extends State<CompassApp> {
 
 class _RotationArea extends StatelessWidget {
   const _RotationArea({
-    super.key,
     required this.rotationAngle,
+    required this.showPieChart,
   });
 
   final int rotationAngle;
+  final bool showPieChart;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +235,7 @@ class _RotationArea extends StatelessWidget {
       children: [
         Direction(rotationAngle: (rotationAngle)),
         const OuterCircle(),
-        Angle(rotationAngle: (rotationAngle)),
+        Angle(rotationAngle: (rotationAngle), showPieChart: showPieChart),
       ],
     );
   }

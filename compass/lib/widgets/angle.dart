@@ -5,10 +5,13 @@ class Angle extends StatelessWidget {
   const Angle({
     super.key,
     required this.rotationAngle,
+    required this.showPieChart,
   });
 
   final int rotationAngle;
-  static const _fontColor = CustomColors.white;
+  final bool showPieChart;
+  static const _fontColor1 = CustomColors.white;
+  static const _fontColor2 = CustomColors.grey2;
   static const _fontSize = 15.0;
   static const _fontWeight = FontWeight.w500;
 
@@ -29,8 +32,8 @@ class Angle extends StatelessWidget {
                           -30 * (i + ((360 - rotationAngle) / 30)) / 360),
                       child: Text(
                         '${i * 30}',
-                        style: const TextStyle(
-                          color: _fontColor,
+                        style: TextStyle(
+                          color: showPieChart ? _fontColor2 : _fontColor1,
                           fontSize: _fontSize,
                           fontWeight: _fontWeight,
                         ),
@@ -40,8 +43,8 @@ class Angle extends StatelessWidget {
                         -30 * (i + ((360 - rotationAngle) / 30)) / 360),
                     child: Text(
                       '${i * 30 + 180}',
-                      style: const TextStyle(
-                        color: _fontColor,
+                      style: TextStyle(
+                        color: showPieChart ? _fontColor2 : _fontColor1,
                         fontSize: _fontSize,
                         fontWeight: _fontWeight,
                       ),

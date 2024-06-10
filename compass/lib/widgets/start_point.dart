@@ -14,33 +14,27 @@ class StartPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Rotation(
-      rotationAngle: moving,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 56),
-        child: Column(
-          children: [
-            Rotation(
-              rotationAngle: -moving,
-              child: Text(
-                startingPoint.toInt().toString(),
-                style: const TextStyle(
-                    color: CustomColors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: 2.5,
-              height: 45,
-              color: CustomColors.white,
-            ),
-          ],
+    return Column(
+      children: [
+        Rotation(
+          rotationAngle: -moving,
+          child: Text(
+            startingPoint.toInt().toString(),
+            style: const TextStyle(
+                color: CustomColors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
+        // const SizedBox(
+        //   height: 5,
+        // ),
+        Container(
+          width: 2.5,
+          height: 43,
+          color: CustomColors.white,
+        ),
+      ],
     );
   }
 }
