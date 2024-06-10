@@ -60,7 +60,7 @@ class _CompassAppState extends State<CompassApp> {
           heading = event.heading!.toInt();
         });
 
-        /// Haptic Feedback
+        /// haptic feedback
         if (heading % 30 == 0) {
           HapticFeedback.mediumImpact();
         }
@@ -122,48 +122,15 @@ class _CompassAppState extends State<CompassApp> {
                         child: const InnerCircle(),
                       ),
 
-                      /// small cross
-                      Transform.translate(
-                        offset: Offset(
-                          _accelerometer[0] * -2,
-                          _accelerometer[1] * 2,
-                        ),
-                        child: const Cross(
-                          size: 0.8,
-                          thick: 20,
-                        ),
-                      ),
-
                       /// large cross
                       const Cross(
                         size: 0.8,
                         thick: 145,
                       ),
 
-                      /// display angle
-                      Rotation(
-                        rotationAngle: (heading),
-                        child: Angle(
-                          rotationAngle: (heading),
-                        ),
-                      ),
-
-                      /// stick
-                      const Stick(),
-
-                      /// start point
-                      if (_showPieChart)
-                        StartPoint(moving: moving, startPoint: startingPoint),
-
-                      /// outer circle
-                      Rotation(
-                        rotationAngle: (heading),
-                        child: const OuterCircle(),
-                      ),
-
                       /// pie chart
                       if (_showPieChart)
-                        pieChart(
+                        Movement(
                           dataMap: {
                             '1': moving.abs().toDouble(),
                             '2': 360 - moving.abs().toDouble(),
@@ -171,11 +138,24 @@ class _CompassAppState extends State<CompassApp> {
                           moving: moving,
                         ),
 
-                      /// direction
+                      /// rotation area
                       Rotation(
-                        rotationAngle: (heading),
-                        child: Direction(rotationAngle: (heading)),
+                        rotationAngle: heading,
+                        child: _RotationArea(rotationAngle: heading),
                       ),
+
+                      /// stick
+                      Transform.translate(
+                        offset: const Offset(0, -144),
+                        child: const Stick(),
+                      ),
+
+                      /// start point
+                      if (_showPieChart)
+                        StartPoint(
+                          moving: moving,
+                          startingPoint: startingPoint,
+                        ),
                     ],
                   ),
                 ),
@@ -189,13 +169,13 @@ class _CompassAppState extends State<CompassApp> {
                   children: [
                     const Background(height: double.infinity),
                     LargeText(
-                      text1: '${heading.round().toString()}°',
-                      text2: locationService.getDirection(heading.round()),
+                      text1: '${heading.toString()}°',
+                      text2: locationService.getDirection(heading),
                     ),
                   ],
                 ),
               ),
-              const Background(height: 10),
+              const Background(height: 20),
 
               /// Section 3
               Flexible(
@@ -223,6 +203,27 @@ class _CompassAppState extends State<CompassApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RotationArea extends StatelessWidget {
+  const _RotationArea({
+    super.key,
+    required this.rotationAngle,
+  });
+
+  final int rotationAngle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Direction(rotationAngle: (rotationAngle)),
+        const OuterCircle(),
+        Angle(rotationAngle: (rotationAngle)),
+      ],
     );
   }
 }

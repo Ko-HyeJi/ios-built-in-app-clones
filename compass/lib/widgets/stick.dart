@@ -8,16 +8,10 @@ class Stick extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 3.5,
-          height: 60,
-          color: CustomColors.white,
-          margin: const EdgeInsets.all(77),
-        ),
-      ],
+    return Container(
+      width: 3.5,
+      height: 60,
+      color: CustomColors.white,
     );
   }
-
 }

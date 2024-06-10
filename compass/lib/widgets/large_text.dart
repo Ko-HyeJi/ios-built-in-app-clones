@@ -10,8 +10,7 @@ class LargeText extends StatelessWidget {
 
   final String text1;
   final String text2;
-  static const _fontSize = 70.0;
-  static const _fontWeight = FontWeight.w200;
+  static const _fontSize = 65.0;
   static const _fontColor = CustomColors.white;
 
   @override
@@ -24,11 +23,12 @@ class LargeText extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const SizedBox(width: 35,),
               Text(
                 text1,
                 style: const TextStyle(
                   fontSize: _fontSize,
-                  fontWeight: _fontWeight,
+                  fontWeight: FontWeight.w300,
                   color: _fontColor,
                 ),
               ),
@@ -45,7 +45,7 @@ class LargeText extends StatelessWidget {
                 text2,
                 style: const TextStyle(
                   fontSize: _fontSize,
-                  fontWeight: _fontWeight,
+                  fontWeight: FontWeight.w100,
                   color: _fontColor,
                 ),
               ),

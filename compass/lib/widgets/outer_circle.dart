@@ -36,17 +36,14 @@ class OuterCircle extends StatelessWidget {
             child: const ClipRRect(),
           ),
         ),
-        RotationTransition(
-          turns: const AlwaysStoppedAnimation(0 / 360),
-          child: Transform.translate(
-            offset: const Offset(
-              120,
-              -28,
-            ),
-            child: const Image(
-              image: AssetImage('assets/arrowtriangle.png'),
-              height: 12,
-            ),
+        Transform.translate(
+          offset: const Offset(
+            118,
+            -28,
+          ),
+          child: const Image(
+            image: AssetImage('assets/arrowtriangle.png'),
+            height: 12,
           ),
         ),
       ],

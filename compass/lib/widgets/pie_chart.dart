@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:compass/color+.dart';
 
-class pieChart extends StatelessWidget {
-  const pieChart({
+class Movement extends StatelessWidget {
+  const Movement({
     super.key,
     required this.dataMap,
     required this.moving,

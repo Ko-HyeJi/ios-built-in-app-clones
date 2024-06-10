@@ -6,24 +6,24 @@ class StartPoint extends StatelessWidget {
   const StartPoint({
     super.key,
     required this.moving,
-    required this.startPoint,
+    required this.startingPoint,
   });
 
   final int moving;
-  final int startPoint;
+  final int startingPoint;
 
   @override
   Widget build(BuildContext context) {
     return Rotation(
-      rotationAngle: (moving),
+      rotationAngle: moving,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 56),
         child: Column(
           children: [
-            RotationTransition(
-              turns: AlwaysStoppedAnimation(moving / 360),
+            Rotation(
+              rotationAngle: -moving,
               child: Text(
-                startPoint.toInt().toString(),
+                startingPoint.toInt().toString(),
                 style: const TextStyle(
                     color: CustomColors.white,
                     fontSize: 22,

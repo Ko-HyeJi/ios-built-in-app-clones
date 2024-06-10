@@ -10,6 +10,7 @@ class Cross extends StatelessWidget {
 
   final double size;
   final double thick;
+  static const _color = CustomColors.grey2;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,12 @@ class Cross extends StatelessWidget {
         Container(
           width: thick,
           height: size,
-          color: CustomColors.grey2,
+          color: _color,
         ),
         Container(
           width: size,
           height: thick,
-          color: CustomColors.grey2,
+          color: _color,
         ),
       ],
     );

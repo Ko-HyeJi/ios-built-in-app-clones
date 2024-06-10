@@ -1,3 +1,4 @@
+import 'package:compass/widgets/rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
 
@@ -8,6 +9,7 @@ class Direction extends StatelessWidget {
   });
 
   final int rotationAngle;
+  static const _size = 215.0;
   static const _fontSize = 27.0;
   static const _fontColor = CustomColors.white;
 
@@ -16,20 +18,20 @@ class Direction extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          width: 215,
-          height: 215,
+          width: _size,
+          height: _size,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RotationTransition(
-                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
+              Rotation(
+                rotationAngle: -rotationAngle,
                 child: const Text(
                   '북',
                   style: TextStyle(fontSize: _fontSize, color: _fontColor),
                 ),
               ),
-              RotationTransition(
-                turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
+              Rotation(
+                rotationAngle: -rotationAngle,
                 child: const Text(
                   '남',
                   style: TextStyle(fontSize: _fontSize, color: _fontColor),
@@ -39,24 +41,24 @@ class Direction extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 215,
-          height: 215,
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
+          width: _size,
+          height: _size,
+          child: Rotation(
+            rotationAngle: -90,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RotationTransition(
-                  turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
+                Rotation(
+                  rotationAngle: -rotationAngle + 90,
                   child: const Text(
-                    '서',
+                    '동',
                     style: TextStyle(fontSize: _fontSize, color: _fontColor),
                   ),
                 ),
-                RotationTransition(
-                  turns: AlwaysStoppedAnimation(360 + rotationAngle / 360),
+                Rotation(
+                  rotationAngle: -rotationAngle + 90,
                   child: const Text(
-                    '동',
+                    '서',
                     style: TextStyle(fontSize: _fontSize, color: _fontColor),
                   ),
                 ),
