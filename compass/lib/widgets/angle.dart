@@ -6,14 +6,27 @@ class Angle extends StatelessWidget {
     super.key,
     required this.rotationAngle,
     required this.showPieChart,
+    required this.startingPoint,
   });
 
   final int rotationAngle;
   final bool showPieChart;
+  final int startingPoint;
   static const _fontColor1 = CustomColors.white;
   static const _fontColor2 = CustomColors.grey2;
   static const _fontSize = 15.0;
   static const _fontWeight = FontWeight.w500;
+
+  double _calculateOpacity(int num) {
+    if (showPieChart) {
+      if ((num - startingPoint).abs() < 12) {
+        return 0;
+      } else if (num == 0 && startingPoint > 348) {
+        return 0;
+      }
+    }
+    return 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,10 @@ class Angle extends StatelessWidget {
                       child: Text(
                         '${i * 30}',
                         style: TextStyle(
-                          color: showPieChart ? _fontColor2 : _fontColor1,
+                          color: showPieChart
+                              ? _fontColor2
+                                  .withOpacity(_calculateOpacity(i * 30))
+                              : _fontColor1,
                           fontSize: _fontSize,
                           fontWeight: _fontWeight,
                         ),
@@ -44,7 +60,9 @@ class Angle extends StatelessWidget {
                     child: Text(
                       '${i * 30 + 180}',
                       style: TextStyle(
-                        color: showPieChart ? _fontColor2 : _fontColor1,
+                        color: showPieChart
+                            ? _fontColor2.withOpacity(_calculateOpacity(i * 30 + 180))
+                            : _fontColor1,
                         fontSize: _fontSize,
                         fontWeight: _fontWeight,
                       ),

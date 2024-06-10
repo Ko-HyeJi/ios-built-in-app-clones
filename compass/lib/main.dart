@@ -48,7 +48,8 @@ class _CompassAppState extends State<CompassApp> {
     });
 
     accelerometerEventStream().listen((AccelerometerEvent event) {
-      if (event.x.toInt() != _accelerometer[0] || event.y.toInt() != _accelerometer[1]) {
+      if (event.x.toInt() != _accelerometer[0] ||
+          event.y.toInt() != _accelerometer[1]) {
         setState(() {
           _accelerometer[0] = event.x.toInt();
           _accelerometer[1] = event.y.toInt();
@@ -146,6 +147,7 @@ class _CompassAppState extends State<CompassApp> {
                         child: _RotationArea(
                           rotationAngle: _heading,
                           showPieChart: _showPieChart,
+                          startingPoint: _startingPoint,
                         ),
                       ),
 
@@ -202,7 +204,9 @@ class _CompassAppState extends State<CompassApp> {
                           SmallText(
                               text:
                                   '${_locationService.convertLatLng(_geoData!.latitude, true)} ${_locationService.convertLatLng(_geoData!.longitude, false)}'),
-                          SmallText(text: '${_geoData!.administrativeArea}, ${_geoData!.locality}'),
+                          SmallText(
+                              text:
+                                  '${_geoData!.administrativeArea}, ${_geoData!.locality}'),
                           SmallText(text: '고도 ${_geoData!.altitude.ceil()}m'),
                         ],
                       ),
@@ -222,10 +226,12 @@ class _RotationArea extends StatelessWidget {
   const _RotationArea({
     required this.rotationAngle,
     required this.showPieChart,
+    required this.startingPoint,
   });
 
   final int rotationAngle;
   final bool showPieChart;
+  final int startingPoint;
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +240,11 @@ class _RotationArea extends StatelessWidget {
       children: [
         Direction(rotationAngle: (rotationAngle)),
         const OuterCircle(),
-        Angle(rotationAngle: (rotationAngle), showPieChart: showPieChart),
+        Angle(
+          rotationAngle: (rotationAngle),
+          showPieChart: showPieChart,
+          startingPoint: startingPoint,
+        ),
       ],
     );
   }
