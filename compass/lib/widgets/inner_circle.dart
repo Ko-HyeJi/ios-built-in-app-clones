@@ -7,6 +7,7 @@ class InnerCircle extends StatelessWidget {
     super.key,
   });
 
+  // TODO: CustomPainter로 변경
   @override
   Widget build(BuildContext context) {
     return Stack(

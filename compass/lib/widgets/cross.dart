@@ -12,6 +12,7 @@ class Cross extends StatelessWidget {
   final double thick;
   static const _color = CustomColors.grey2;
 
+  // TODO: CustomPainter로 변경
   @override
   Widget build(BuildContext context) {
     return Stack(

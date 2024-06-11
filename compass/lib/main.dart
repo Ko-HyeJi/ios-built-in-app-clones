@@ -139,6 +139,15 @@ class _CompassAppState extends State<CompassApp> {
                           moving: _moving,
                         ),
 
+                      Rotation(
+                        rotationAngle: 135,
+                        child: CustomPaint(
+                          size: Size(200, 200),
+                          painter: StickPaint(),
+                        ),
+                      ),
+
+
                       /// rotation area
                       Rotation(
                         rotationAngle: _heading,
@@ -150,10 +159,11 @@ class _CompassAppState extends State<CompassApp> {
                       ),
 
                       /// stick
-                      Transform.translate(
-                        offset: const Offset(0, -144),
-                        child: const Stick(),
-                      ),
+                      // Transform.translate(
+                      //   offset: const Offset(0, -144),
+                      //   child: const Stick(),
+                      // ),
+
 
                       /// start point
                       if (_showPieChart)
@@ -235,9 +245,9 @@ class _RotationArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
-      children: [
+      children: <Widget>[
         Direction(rotationAngle: (rotationAngle)),
-        const OuterCircle(),
+        const OuterCircleByCustomPainter(),
         Angle(
           rotationAngle: (rotationAngle),
           showPieChart: showPieChart,
@@ -247,3 +257,5 @@ class _RotationArea extends StatelessWidget {
     );
   }
 }
+
+const myBlendMode = BlendMode.difference;

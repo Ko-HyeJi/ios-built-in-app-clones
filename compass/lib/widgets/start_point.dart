@@ -26,9 +26,8 @@ class StartPoint extends StatelessWidget {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        // const SizedBox(
-        //   height: 5,
-        // ),
+
+        // TODO: CustomPainter로 변경
         Container(
           width: 2.5,
           height: 43,
@@ -37,4 +36,18 @@ class StartPoint extends StatelessWidget {
       ],
     );
   }
+}
+
+class BarPaint extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // TODO: implement paint
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    throw UnimplementedError();
+  }
+  
 }

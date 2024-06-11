@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
 
+import '../main.dart';
+
 class Stick extends StatelessWidget {
   const Stick({
     super.key,
@@ -13,5 +15,27 @@ class Stick extends StatelessWidget {
       height: 60,
       color: CustomColors.white,
     );
+  }
+}
+
+class StickPaint extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // const lineLength = 35;
+
+    Paint paint = Paint()
+      ..color = CustomColors.white
+      ..strokeWidth = 4
+      ..blendMode = myBlendMode;
+
+    Offset p1 = Offset(size.width + 22, size.height + 22);
+    Offset p2 = Offset(size.width - 22, size.height - 22);
+
+    canvas.drawLine(p1, p2, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

@@ -12,6 +12,7 @@ class Movement extends StatelessWidget {
   final Map<String, double> dataMap;
   final int moving;
 
+  // TODO: CustomPainter로 변경
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
