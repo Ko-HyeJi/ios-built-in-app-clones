@@ -10,7 +10,7 @@ class StartPoint extends StatelessWidget {
     required this.startingPoint,
   });
 
-  final int moving;
+  final double moving;
   final int startingPoint;
 
   @override

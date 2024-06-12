@@ -48,7 +48,7 @@ class LocationService {
     return dmsOutput;
   }
 
-  String getDirection(int angle) {
+  String getDirection(double angle) {
     if (angle >= 338 || angle < 23) {
       return '북';
     } else if (angle >= 23 && angle < 68) {

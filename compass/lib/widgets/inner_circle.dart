@@ -9,13 +9,13 @@ class InnerCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       alignment: Alignment.center,
       children: [
         CustomPaint(
-          painter: CirclePainter(),
+          painter: CirclePainter(radius: 45),
         ),
-        const CustomPaint(
+        CustomPaint(
           size: Size(20, 20),
           painter: CrossPainter(strokeWidth: 0.8),
         ),
@@ -25,13 +25,19 @@ class InnerCircle extends StatelessWidget {
 }
 
 class CirclePainter extends CustomPainter {
+  const CirclePainter({
+    required this.radius,
+  });
+
+  final double radius;
+
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..color = CustomColors.grey;
 
-    // Offset center = Offset(0, 0);
+    Offset center = const Offset(0, 0);
 
-    canvas.drawCircle(const Offset(0, 0), 50, paint);
+    canvas.drawCircle(center, radius, paint);
   }
 
   @override

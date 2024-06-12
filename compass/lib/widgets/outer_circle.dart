@@ -1,4 +1,4 @@
-import 'package:compass/widgets/rotation.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
 
@@ -7,45 +7,40 @@ class OuterCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Rotation(
-      rotationAngle: 15,
-      child: Stack(
-        children: [
-          for (var i = 0; i < 180; i++)
-            Rotation(
-              rotationAngle: i * 2,
-              child: CustomPaint(
-                size: const Size(180, 180),
-                painter: MarkPainter(strokeWidth: i % 15 == 0 ? 2.5 : 1.0),
-              ),
-            ),
-        ],
-      ),
+    return const CustomPaint(
+      painter: DottedCirclePainter(radius: 128),
     );
   }
 }
 
-class MarkPainter extends CustomPainter {
-  final double strokeWidth;
-
-  MarkPainter({
-    super.repaint,
-    required this.strokeWidth,
+class DottedCirclePainter extends CustomPainter {
+  const DottedCirclePainter({
+    required this.radius,
   });
+
+  final double radius;
 
   @override
   void paint(Canvas canvas, Size size) {
-    const lineLength = 12;
-
-    Paint paint = Paint()
+    final Paint paint = Paint()
       ..color = CustomColors.white
-      ..strokeWidth = strokeWidth
       ..blendMode = CustomColors.blendMode;
 
-    Offset p1 = Offset(size.width - lineLength, size.height - lineLength);
-    Offset p2 = Offset(size.width, size.height);
+    const double radiantStep = pi / 180 * 2;
+    for (int i = 0; i < 180; i++) {
+      if (i % 15 == 0) {
+        paint.strokeWidth = 2.5;
+      } else {
+        paint.strokeWidth = 1.0;
+      }
 
-    canvas.drawLine(p1, p2, paint);
+      canvas.drawLine(
+        Offset(sin(i * radiantStep) * radius, cos(i * radiantStep) * radius),
+        Offset(sin(i * radiantStep) * (radius - 18),
+            cos(i * radiantStep) * (radius - 18)),
+        paint,
+      );
+    }
   }
 
   @override

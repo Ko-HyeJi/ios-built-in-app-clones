@@ -8,7 +8,7 @@ class Direction extends StatelessWidget {
     required this.rotationAngle,
   });
 
-  final int rotationAngle;
+  final double rotationAngle;
   static const _size = 215.0;
   static const _fontSize = 27.0;
   static const _fontColor = CustomColors.white;

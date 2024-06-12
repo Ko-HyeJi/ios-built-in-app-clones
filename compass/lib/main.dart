@@ -33,9 +33,9 @@ class _CompassAppState extends State<CompassApp> {
   final List<double> _accelerometer = [0.0, 0.0];
   GeoData? _geoData;
   bool _showPieChart = false;
-  int _heading = 0;
+  double _heading = 0;
   int _recentHaptic = 0;
-  int _moving = 0;
+  double _moving = 0;
   int _startingPoint = 0;
 
   @override
@@ -48,7 +48,7 @@ class _CompassAppState extends State<CompassApp> {
       });
     });
 
-    accelerometerEventStream(samplingPeriod: SensorInterval.fastestInterval)
+    accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
         .listen((AccelerometerEvent event) {
       setState(() {
         _accelerometer[0] = event.x;
@@ -57,33 +57,33 @@ class _CompassAppState extends State<CompassApp> {
     });
 
     FlutterCompass.events!.listen((event) {
-      if (event.heading!.toInt() != _heading) {
-        setState(() {
-          _heading = event.heading!.toInt();
-        });
+      setState(() {
+        _heading = event.heading!;
+      });
 
-        /// haptic feedback
-        if (_heading % 30 == 0) {
+      /// haptic feedback
+      if (_heading.toInt() % 30 == 0) {
+        if ((_heading - _recentHaptic).abs() > 1) {
           HapticFeedback.mediumImpact();
-          _recentHaptic = _heading;
-        } else if ((_heading - _recentHaptic).abs() > 30) {
-          HapticFeedback.mediumImpact();
-          _recentHaptic = _heading;
+          _recentHaptic = _heading.toInt();
+        }
+      } else if ((_heading - _recentHaptic).abs() > 30) {
+        HapticFeedback.mediumImpact();
+        _recentHaptic = _heading.toInt();
+      }
+
+      /// calculate moving
+      if (_showPieChart) {
+        if ((_startingPoint > 180 && _heading < 180) && _moving > 0) {
+          _moving = (360 - _startingPoint) + _heading;
+        } else if ((_startingPoint < 180 && _heading > 180) && _moving < 0) {
+          _moving = _startingPoint + (_heading - 360);
+        } else {
+          _moving = _heading - _startingPoint;
         }
 
-        /// calculate moving
-        if (_showPieChart) {
-          if ((_startingPoint > 180 && _heading < 180) && _moving > 0) {
-            _moving = (360 - _startingPoint) + _heading;
-          } else if ((_startingPoint < 180 && _heading > 180) && _moving < 0) {
-            _moving = -_startingPoint + (_heading - 360);
-          } else {
-            _moving = _heading - _startingPoint;
-          }
-
-          if (_moving.abs() > 180) {
-            _moving = -_moving;
-          }
+        if (_moving.abs() > 180) {
+          _moving = -_moving;
         }
       }
     });
@@ -92,7 +92,7 @@ class _CompassAppState extends State<CompassApp> {
   void _onTapAction() {
     setState(() {
       if (!_showPieChart) {
-        _startingPoint = _heading;
+        _startingPoint = _heading.toInt();
       } else {
         _startingPoint = 0;
         _moving = 0;
@@ -137,10 +137,11 @@ class _CompassAppState extends State<CompassApp> {
                       /// pie chart
                       if (_showPieChart)
                         Rotation(
-                          rotationAngle: 135,
+                          rotationAngle: _moving,
                           child: Movement(moving: _moving),
                         ),
 
+                      /// stick
                       Rotation(
                         rotationAngle: 135,
                         child: CustomPaint(
@@ -158,12 +159,6 @@ class _CompassAppState extends State<CompassApp> {
                           startingPoint: _startingPoint,
                         ),
                       ),
-
-                      /// stick
-                      // Transform.translate(
-                      //   offset: const Offset(0, -144),
-                      //   child: const Stick(),
-                      // ),
 
                       /// start point
                       if (_showPieChart)
@@ -190,7 +185,7 @@ class _CompassAppState extends State<CompassApp> {
                   children: [
                     const Background(height: double.infinity),
                     LargeText(
-                      text1: '${_heading.toString()}°',
+                      text1: '${_heading.toInt().toString()}°',
                       text2: _locationService.getDirection(_heading),
                     ),
                   ],
@@ -237,7 +232,7 @@ class _RotationArea extends StatelessWidget {
     required this.startingPoint,
   });
 
-  final int rotationAngle;
+  final double rotationAngle;
   final bool showPieChart;
   final int startingPoint;
 

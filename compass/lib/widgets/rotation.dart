@@ -8,7 +8,7 @@ class Rotation extends StatelessWidget {
   });
 
   final Widget child;
-  final int rotationAngle;
+  final double rotationAngle;
 
   @override
   Widget build(BuildContext context) {
