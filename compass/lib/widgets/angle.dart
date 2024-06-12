@@ -16,12 +16,14 @@ class Angle extends StatelessWidget {
   static const _fontSize = 15.0;
   static const _fontWeight = FontWeight.w500;
 
-  double _calculateOpacity(int num) {
+  double _calculateOpacity(double num) {
     if (showPieChart) {
       if ((num - startingPoint).abs() < 12) {
         return 0;
       } else if (num == 0 && startingPoint > 348) {
         return 0;
+      } else {
+        return 0.7;
       }
     }
     return 1;
@@ -45,7 +47,8 @@ class Angle extends StatelessWidget {
                       child: Text(
                         '${i * 30}',
                         style: TextStyle(
-                          color: _fontColor.withOpacity(showPieChart ? 0.7 : 1.0),
+                          color:
+                              _fontColor.withOpacity(_calculateOpacity(i * 30)),
                           fontSize: _fontSize,
                           fontWeight: _fontWeight,
                         ),
@@ -56,7 +59,7 @@ class Angle extends StatelessWidget {
                     child: Text(
                       '${i * 30 + 180}',
                       style: TextStyle(
-                        color: _fontColor.withOpacity(showPieChart ? 0.7 : 1.0),
+                        color: _fontColor.withOpacity(_calculateOpacity(i * 30 + 180)),
                         fontSize: _fontSize,
                         fontWeight: _fontWeight,
                       ),
