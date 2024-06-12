@@ -32,7 +32,11 @@ dependencies:
     sdk: flutter
   dotted_border: ^2.1.0
   pie_chart: ^5.4.0
-  flutter_compass: '^0.7.0'
+#  flutter_compass: '^0.7.0'
+  flutter_compass:
+    git:
+      url: https://github.com/Ko-HyeJi/flutter_compass.git
+      ref: fixInterval
   permission_handler: ^11.3.1
   sensors_plus: ^5.0.1
   geolocator: ^12.0.0

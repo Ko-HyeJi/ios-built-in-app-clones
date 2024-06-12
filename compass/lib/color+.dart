@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract final class CustomColors {
+  static const blendMode = BlendMode.difference;
+
   static const Color red = Color.fromRGBO(251, 27, 0, 1.0);
   static const Color black = Color.fromRGBO(0, 0, 0, 1.0);
   static const Color white = Color.fromRGBO(255, 255, 255, 0.95);

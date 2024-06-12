@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
 
-import '../main.dart';
-
 class Stick extends StatelessWidget {
   const Stick({
     super.key,
@@ -26,7 +24,7 @@ class StickPainter extends CustomPainter {
     Paint paint = Paint()
       ..color = CustomColors.white
       ..strokeWidth = 4
-      ..blendMode = myBlendMode;
+      ..blendMode = CustomColors.blendMode;
 
     Offset p1 = Offset(size.width + 22, size.height + 22);
     Offset p2 = Offset(size.width - 22, size.height - 22);

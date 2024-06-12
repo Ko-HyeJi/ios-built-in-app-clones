@@ -89,11 +89,12 @@ packages:
   flutter_compass:
     dependency: "direct main"
     description:
-      name: flutter_compass
-      sha256: "1a0121bff32df95193812b4e0f69e95f45fdec042ebd7a326ba087c0f6ec8304"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
+      path: "."
+      ref: fixInterval
+      resolved-ref: b6d8fba652994fa5f2184da55a1ade9eb7e8f49a
+      url: "https://github.com/Ko-HyeJi/flutter_compass.git"
+    source: git
+    version: "0.8.0"
   flutter_lints:
     dependency: "direct dev"
     description:

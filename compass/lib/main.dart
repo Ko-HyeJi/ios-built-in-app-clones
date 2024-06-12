@@ -34,6 +34,7 @@ class _CompassAppState extends State<CompassApp> {
   GeoData? _geoData;
   bool _showPieChart = false;
   int _heading = 0;
+  int _recentHaptic = 0;
   int _moving = 0;
   int _startingPoint = 0;
 
@@ -64,6 +65,10 @@ class _CompassAppState extends State<CompassApp> {
         /// haptic feedback
         if (_heading % 30 == 0) {
           HapticFeedback.mediumImpact();
+          _recentHaptic = _heading;
+        } else if ((_heading - _recentHaptic).abs() > 30) {
+          HapticFeedback.mediumImpact();
+          _recentHaptic = _heading;
         }
 
         /// calculate moving
@@ -242,7 +247,7 @@ class _RotationArea extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         Direction(rotationAngle: (rotationAngle)),
-        const OuterCircleByCustomPainter(),
+        const OuterCircle(),
         Angle(
           rotationAngle: (rotationAngle),
           showPieChart: showPieChart,
@@ -259,5 +264,3 @@ class _RotationArea extends StatelessWidget {
     );
   }
 }
-
-const myBlendMode = BlendMode.difference;
