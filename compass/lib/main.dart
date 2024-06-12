@@ -47,7 +47,7 @@ class _CompassAppState extends State<CompassApp> {
       });
     });
 
-    accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
+    accelerometerEventStream(samplingPeriod: SensorInterval.fastestInterval)
         .listen((AccelerometerEvent event) {
       setState(() {
         _accelerometer[0] = event.x;
@@ -124,29 +124,25 @@ class _CompassAppState extends State<CompassApp> {
                       ),
 
                       /// large cross
-                      const Cross(
-                        size: 0.8,
-                        thick: 145,
+                      const CustomPaint(
+                        size: Size(145, 145),
+                        painter: CrossPainter(strokeWidth: 0.8),
                       ),
 
                       /// pie chart
                       if (_showPieChart)
-                        Movement(
-                          dataMap: {
-                            '1': _moving.abs().toDouble(),
-                            '2': 360 - _moving.abs().toDouble(),
-                          },
-                          moving: _moving,
+                        Rotation(
+                          rotationAngle: 135,
+                          child: Movement(moving: _moving),
                         ),
 
                       Rotation(
                         rotationAngle: 135,
                         child: CustomPaint(
-                          size: Size(200, 200),
-                          painter: StickPaint(),
+                          size: const Size(200, 200),
+                          painter: StickPainter(),
                         ),
                       ),
-
 
                       /// rotation area
                       Rotation(
@@ -163,7 +159,6 @@ class _CompassAppState extends State<CompassApp> {
                       //   offset: const Offset(0, -144),
                       //   child: const Stick(),
                       // ),
-
 
                       /// start point
                       if (_showPieChart)
@@ -252,6 +247,13 @@ class _RotationArea extends StatelessWidget {
           rotationAngle: (rotationAngle),
           showPieChart: showPieChart,
           startingPoint: startingPoint,
+        ),
+        Transform.translate(
+          offset: const Offset(0, -140),
+          child: CustomPaint(
+            size: const Size(13, 13),
+            painter: TrianglePainter(),
+          ),
         ),
       ],
     );

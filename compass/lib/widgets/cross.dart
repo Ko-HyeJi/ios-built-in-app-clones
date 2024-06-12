@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
 
-class Cross extends StatelessWidget {
-  const Cross({
-    super.key,
-    required this.size,
-    required this.thick,
-  });
+class CrossPainter extends CustomPainter {
+  const CrossPainter({required this.strokeWidth});
 
-  final double size;
-  final double thick;
-  static const _color = CustomColors.grey2;
+  final double strokeWidth;
 
-  // TODO: CustomPainter로 변경
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          width: thick,
-          height: size,
-          color: _color,
-        ),
-        Container(
-          width: size,
-          height: thick,
-          color: _color,
-        ),
-      ],
-    );
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = CustomColors.grey2
+      ..strokeWidth = strokeWidth;
+
+    Offset p1 = Offset(size.width / 2, 0);
+    Offset p2 = Offset(size.width / 2, size.height);
+    canvas.drawLine(p1, p2, paint);
+
+    p1 = Offset(0, size.height / 2);
+    p2 = Offset(size.width, size.height / 2);
+    canvas.drawLine(p1, p2, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

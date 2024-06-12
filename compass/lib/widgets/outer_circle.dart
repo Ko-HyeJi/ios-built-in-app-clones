@@ -5,54 +5,54 @@ import 'package:compass/color+.dart';
 
 import '../main.dart';
 
-class OuterCircle extends StatelessWidget {
-  const OuterCircle({
-    super.key,
-  });
-
-  static const _thin = [0.9142857143, 0.9142857143 * 4];
-  static const _thick = [2.5, 61.5];
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: 245,
-          width: 245,
-          child: DottedBorder(
-            borderType: BorderType.Circle,
-            strokeWidth: 17.5,
-            color: CustomColors.white,
-            dashPattern: _thin,
-            child: const ClipRRect(),
-          ),
-        ),
-        SizedBox(
-          height: 245,
-          width: 245,
-          child: DottedBorder(
-            borderType: BorderType.Circle,
-            strokeWidth: 17.5,
-            color: CustomColors.white,
-            dashPattern: _thick,
-            child: const ClipRRect(),
-          ),
-        ),
-        Transform.translate(
-          offset: const Offset(
-            118,
-            -28,
-          ),
-          child: const Image(
-            image: AssetImage('assets/arrowtriangle.png'),
-            height: 12,
-          ),
-        ),
-      ],
-    );
-  }
-}
+// class OuterCircle extends StatelessWidget {
+//   const OuterCircle({
+//     super.key,
+//   });
+//
+//   static const _thin = [0.9142857143, 0.9142857143 * 4];
+//   static const _thick = [2.5, 61.5];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         SizedBox(
+//           height: 245,
+//           width: 245,
+//           child: DottedBorder(
+//             borderType: BorderType.Circle,
+//             strokeWidth: 17.5,
+//             color: CustomColors.white,
+//             dashPattern: _thin,
+//             child: const ClipRRect(),
+//           ),
+//         ),
+//         SizedBox(
+//           height: 245,
+//           width: 245,
+//           child: DottedBorder(
+//             borderType: BorderType.Circle,
+//             strokeWidth: 17.5,
+//             color: CustomColors.white,
+//             dashPattern: _thick,
+//             child: const ClipRRect(),
+//           ),
+//         ),
+//         Transform.translate(
+//           offset: const Offset(
+//             118,
+//             -28,
+//           ),
+//           child: const Image(
+//             image: AssetImage('assets/arrowtriangle.png'),
+//             height: 12,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class OuterCircleByCustomPainter extends StatelessWidget {
   const OuterCircleByCustomPainter({super.key});
@@ -68,7 +68,7 @@ class OuterCircleByCustomPainter extends StatelessWidget {
               rotationAngle: i * 2,
               child: CustomPaint(
                 size: const Size(180, 180),
-                painter: MarkPaint(strokeWidth: i % 15 == 0 ? 2.5 : 1.0),
+                painter: MarkPainter(strokeWidth: i % 15 == 0 ? 2.5 : 1.0),
               ),
             ),
         ],
@@ -77,10 +77,10 @@ class OuterCircleByCustomPainter extends StatelessWidget {
   }
 }
 
-class MarkPaint extends CustomPainter {
+class MarkPainter extends CustomPainter {
   final double strokeWidth;
 
-  MarkPaint({
+  MarkPainter({
     super.repaint,
     required this.strokeWidth,
   });
@@ -106,16 +106,26 @@ class MarkPaint extends CustomPainter {
   }
 }
 
-class ArrowPaint extends CustomPainter {
+class TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO: implement paint
+    Paint paint = Paint()
+      ..color = CustomColors.red
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(getTrianglePath(size.width, size.height), paint);
+  }
+
+  Path getTrianglePath(double x, double y) {
+    return Path()
+      ..moveTo(0, y)
+      ..lineTo(x / 2, 0)
+      ..lineTo(x, y)
+      ..lineTo(0, y);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
-    throw UnimplementedError();
+  bool shouldRepaint(TrianglePainter oldDelegate) {
+    return false;
   }
-  
 }

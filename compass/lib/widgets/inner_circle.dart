@@ -7,24 +7,35 @@ class InnerCircle extends StatelessWidget {
     super.key,
   });
 
-  // TODO: CustomPainter로 변경
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          width: 100,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: CustomColors.grey,
-          ),
+        CustomPaint(
+          painter: CirclePainter(),
         ),
-        const Cross(
-          size: 0.8,
-          thick: 20,
+        const CustomPaint(
+          size: Size(20, 20),
+          painter: CrossPainter(strokeWidth: 0.8),
         ),
       ],
     );
+  }
+}
+
+class CirclePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()..color = CustomColors.grey;
+
+    // Offset center = Offset(0, 0);
+
+    canvas.drawCircle(const Offset(0, 0), 50, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
