@@ -4,15 +4,8 @@ import 'package:compass/models/geo_data_model.dart';
 
 class LocationService {
   Future<GeoData> getGeoData() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('permissions are denied');
-      }
-    }
+    Position position = await _determinePosition();
 
-    Position position = await Geolocator.getCurrentPosition();
     List<String> placemarks =
         await _getPlacemarks(position.latitude, position.longitude);
 
@@ -23,6 +16,31 @@ class LocationService {
       administrativeArea: placemarks[0],
       locality: placemarks[1],
     );
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   Future<List<String>> _getPlacemarks(double latitude, double longitude) async {

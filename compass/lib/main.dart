@@ -58,7 +58,10 @@ class _CompassAppState extends State<CompassApp> {
 
     FlutterCompass.events!.listen((event) {
       setState(() {
-        _heading = event.heading!;
+        _heading = event.heading ?? 0;
+        if (_heading < 0) {
+          _heading += 360;
+        }
       });
 
       /// haptic feedback
