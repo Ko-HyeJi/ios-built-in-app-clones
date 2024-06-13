@@ -19,7 +19,6 @@ class Stick extends StatelessWidget {
 class StickPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    // const lineLength = 35;
 
     Paint paint = Paint()
       ..color = CustomColors.white

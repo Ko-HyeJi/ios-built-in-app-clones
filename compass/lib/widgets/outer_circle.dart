@@ -8,7 +8,10 @@ class OuterCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CustomPaint(
-      painter: DottedCirclePainter(radius: 128),
+      painter: DottedCirclePainter(
+        radius: 128,
+        lineLength: 18,
+      ),
     );
   }
 }
@@ -16,9 +19,11 @@ class OuterCircle extends StatelessWidget {
 class DottedCirclePainter extends CustomPainter {
   const DottedCirclePainter({
     required this.radius,
+    required this.lineLength,
   });
 
   final double radius;
+  final double lineLength;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -36,8 +41,8 @@ class DottedCirclePainter extends CustomPainter {
 
       canvas.drawLine(
         Offset(sin(i * radiantStep) * radius, cos(i * radiantStep) * radius),
-        Offset(sin(i * radiantStep) * (radius - 18),
-            cos(i * radiantStep) * (radius - 18)),
+        Offset(sin(i * radiantStep) * (radius - lineLength),
+            cos(i * radiantStep) * (radius - lineLength)),
         paint,
       );
     }

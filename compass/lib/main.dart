@@ -16,8 +16,12 @@ import 'package:compass/widgets/start_point.dart';
 import 'package:compass/widgets/stick.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:compass/models/geo_data_model.dart';
+import 'package:compass/services/platform.provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await platformProvider.initPlatform();
+
   runApp(const CompassApp());
 }
 
@@ -167,12 +171,9 @@ class _CompassAppState extends State<CompassApp> {
                       if (_showPieChart)
                         Rotation(
                           rotationAngle: _moving,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 60),
-                            child: StartPoint(
-                              moving: _moving,
-                              startingPoint: _startingPoint,
-                            ),
+                          child: StartPoint(
+                            moving: _moving,
+                            startingPoint: _startingPoint,
                           ),
                         ),
                     ],

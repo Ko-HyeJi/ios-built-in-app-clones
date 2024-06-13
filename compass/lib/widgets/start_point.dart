@@ -1,4 +1,3 @@
-import 'package:compass/main.dart';
 import 'package:compass/widgets/rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:compass/color+.dart';
@@ -15,23 +14,29 @@ class StartPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Rotation(
-          rotationAngle: -moving,
-          child: Text(
-            startingPoint.toInt().toString(),
-            style: const TextStyle(
-                color: CustomColors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold),
+    return SizedBox(
+      height: 128 * 2 + 116,
+      child: Column(
+        children: [
+          Rotation(
+            rotationAngle: -moving,
+            child: Text(
+              startingPoint.toInt().toString(),
+              style: const TextStyle(
+                  color: CustomColors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        CustomPaint(
-          size: const Size(46, 46),
-          painter: BarPainter(),
-        )
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          CustomPaint(
+            size: const Size(40, 40),
+            painter: BarPainter(),
+          )
+        ],
+      ),
     );
   }
 }
