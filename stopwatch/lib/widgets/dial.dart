@@ -17,12 +17,10 @@ class Dial extends StatelessWidget {
       children: [
         DialMark(radius: size * 0.5),
         DialIndex(radius: size * 0.4),
-        RotationTransition(
-          turns: const AlwaysStoppedAnimation(0),
-          child: SecondHand(
-            radius: size * 0.5,
-            color: Colors.orangeAccent,
-          ),
+        SecondHand(
+          radius: size * 0.5,
+          color: Colors.orangeAccent,
+          seconds: 3.0,
         ),
       ],
     );

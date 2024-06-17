@@ -5,17 +5,22 @@ class SecondHand extends StatelessWidget {
     super.key,
     required this.radius,
     required this.color,
+    required this.seconds,
   });
 
   final double radius;
   final Color color;
+  final double seconds;
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: SecondHandPainter(
-        radius: radius,
-        color: color,
+    return RotationTransition(
+      turns: AlwaysStoppedAnimation(seconds / 60),
+      child: CustomPaint(
+        painter: SecondHandPainter(
+          radius: radius,
+          color: color,
+        ),
       ),
     );
   }

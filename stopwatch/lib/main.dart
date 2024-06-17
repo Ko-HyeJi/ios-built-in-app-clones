@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/models/lap.model.dart';
 import 'package:stopwatch/services/platform.provider.dart';
-import 'package:stopwatch/widgets/dial.dart';
-import 'package:stopwatch/widgets/second_hand.dart';
-import 'package:stopwatch/widgets/sub_dial.dart';
+import 'package:stopwatch/screens/circular_stopwatch.dart';
+import 'package:stopwatch/screens/text_stopwatch.dart';
+import 'package:stopwatch/widgets/circle_button.dart';
+import 'package:stopwatch/widgets/lap_times_list.dart';
+import 'package:stopwatch/widgets/page_indicator.dart';
 
 late final double deviceWidth;
+late final double deviceHeight;
+const buttonRatio = 0.22;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,34 +25,82 @@ class StopwatchApp extends StatefulWidget {
 }
 
 class _StopwatchAppState extends State<StopwatchApp> {
-  // late final double deviceWidth;
-
   @override
   void initState() {
     super.initState();
     deviceWidth = platformProvider.deviceData?.logicalSize.width ?? 0;
+    deviceHeight = platformProvider.deviceData?.logicalSize.height ?? 0;
   }
+
+  final PageController pageController = PageController(initialPage: 1);
+  var currentPage = 1;
+  var lap = Lap();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Stack(
-        alignment: Alignment.center,
-        children: [
-          RotationTransition(
-            turns: const AlwaysStoppedAnimation(0.3),
-            child: SecondHand(
-              radius: deviceWidth * 0.9 * 0.5,
-              color: Colors.blueAccent,
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(
+          children: [
+            Transform.translate(
+              offset: Offset(0, deviceWidth * buttonRatio * 0.25),
+              child: SizedBox(
+                width: deviceWidth,
+                height: deviceWidth,
+                child: PageView(
+                  controller: pageController,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      currentPage = page;
+                    });
+                  },
+                  children: [
+                    TextStopwatch(
+                      width: deviceWidth * 0.9,
+                      fontWeight: FontWeight.w200,
+                      min: 15,
+                      sec: 10,
+                      msec: 30,
+                    ),
+                    const CircularStopwatch(),
+                  ],
+                ),
+              ),
             ),
-          ),
-          SubDial(
-            size: deviceWidth * 0.27,
-          ),
-          Dial(
-            size: deviceWidth * 0.9,
-          ),
-        ],
+            Transform.translate(
+              offset: Offset(0, -deviceWidth * buttonRatio * 0.25),
+              child: SizedBox(
+                width: deviceWidth * 0.9,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleButton(
+                      onTap: () {},
+                      size: deviceWidth * buttonRatio,
+                      color: Colors.grey,
+                      text: '랩',
+                      textColor: Colors.white,
+                    ),
+                    PageIndication(pageIndex: currentPage),
+                    CircleButton(
+                      onTap: () {},
+                      size: deviceWidth * buttonRatio,
+                      text: '시작',
+                      color: Colors.green,
+                      textColor: Colors.greenAccent,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: deviceWidth * 0.9,
+              height: deviceHeight - deviceWidth - deviceWidth * buttonRatio,
+              child: LapTimesList(lap: lap,),
+            ),
+          ],
+        ),
       ),
     );
   }
