@@ -22,7 +22,7 @@ class LapTimesList extends StatelessWidget {
           ),
         ),
         ListView.separated(
-          reverse: true,
+          // reverse: true,
           padding: EdgeInsets.zero,
           itemCount: lap.lapTimes.length,
           itemBuilder: (context, index) {
@@ -32,7 +32,7 @@ class LapTimesList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '랩 ${index + 1}',
+                    '랩 ${lap.lapTimes.length - index}',
                     style: TextStyle(
                       color: index == lap.minIndex
                           ? Colors.green
@@ -43,7 +43,7 @@ class LapTimesList extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    lap.lapTimes[index],
+                    formatTime(lap.lapTimes[index]),
                     style: TextStyle(
                       color: index == lap.minIndex
                           ? Colors.green

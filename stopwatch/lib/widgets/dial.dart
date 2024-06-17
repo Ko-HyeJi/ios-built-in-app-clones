@@ -7,9 +7,11 @@ class Dial extends StatelessWidget {
   const Dial({
     super.key,
     required this.size,
+    required this.seconds,
   });
 
   final double size;
+  final double seconds;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class Dial extends StatelessWidget {
         SecondHand(
           radius: size * 0.5,
           color: Colors.orangeAccent,
-          seconds: 3.0,
+          seconds: seconds,
         ),
       ],
     );

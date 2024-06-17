@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:stopwatch/models/lap.model.dart';
 import 'package:stopwatch/services/platform.provider.dart';
@@ -32,9 +34,42 @@ class _StopwatchAppState extends State<StopwatchApp> {
     deviceHeight = platformProvider.deviceData?.logicalSize.height ?? 0;
   }
 
-  final PageController pageController = PageController(initialPage: 1);
-  var currentPage = 1;
-  var lap = Lap();
+  final PageController _pageController = PageController(initialPage: 1);
+  var _currentPage = 1;
+  final _lap = Lap();
+
+  final Stopwatch _stopwatch = Stopwatch();
+  Timer? _timer;
+
+  void _startTimer() {
+    _stopwatch.start();
+    _timer = Timer.periodic(Duration(milliseconds: 30), (Timer timer) {
+      setState(() {});
+    });
+  }
+
+  void _stopTimer() {
+    _stopwatch.stop();
+    _timer?.cancel();
+  }
+
+  void _resetTimer() {
+    _stopwatch.reset();
+    setState(() {});
+  }
+
+  void _registerLap() {
+    _lap.lapTimes.insert(0, _stopwatch.elapsed.inMilliseconds);
+    _lap.minIndex = _lap.lapTimes.indexOf(_lap.lapTimes.reduce((a, b) => a < b ? a : b));
+    _lap.maxIndex = _lap.lapTimes.indexOf(_lap.lapTimes.reduce((a, b) => a > b ? a : b));
+  }
+
+  @override
+  void dispose() {
+    _stopwatch.stop();
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +84,21 @@ class _StopwatchAppState extends State<StopwatchApp> {
                 width: deviceWidth,
                 height: deviceWidth,
                 child: PageView(
-                  controller: pageController,
+                  controller: _pageController,
                   onPageChanged: (int page) {
                     setState(() {
-                      currentPage = page;
+                      _currentPage = page;
                     });
                   },
                   children: [
                     TextStopwatch(
                       width: deviceWidth * 0.9,
                       fontWeight: FontWeight.w200,
-                      min: 15,
-                      sec: 10,
-                      msec: 30,
+                      elapsedTime: _stopwatch.elapsed,
                     ),
-                    const CircularStopwatch(),
+                    CircularStopwatch(
+                      elapsedTime: _stopwatch.elapsed,
+                    ),
                   ],
                 ),
               ),
@@ -76,18 +111,22 @@ class _StopwatchAppState extends State<StopwatchApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleButton(
-                      onTap: () {},
+                      onTap: () {
+                        _stopwatch.isRunning ? _registerLap() : _resetTimer();
+                      },
                       size: deviceWidth * buttonRatio,
                       color: Colors.grey,
-                      text: '랩',
+                      text: _stopwatch.isRunning ? '랩' : '재설정',
                       textColor: Colors.white,
                     ),
-                    PageIndication(pageIndex: currentPage),
+                    PageIndication(pageIndex: _currentPage),
                     CircleButton(
-                      onTap: () {},
+                      onTap: () {
+                        _stopwatch.isRunning ? _stopTimer() : _startTimer();
+                      },
                       size: deviceWidth * buttonRatio,
-                      text: '시작',
-                      color: Colors.green,
+                      text: _stopwatch.isRunning ? '중단' : '시작',
+                      color: _stopwatch.isRunning ? Colors.red : Colors.green,
                       textColor: Colors.greenAccent,
                     ),
                   ],
@@ -97,7 +136,9 @@ class _StopwatchAppState extends State<StopwatchApp> {
             SizedBox(
               width: deviceWidth * 0.9,
               height: deviceHeight - deviceWidth - deviceWidth * buttonRatio,
-              child: LapTimesList(lap: lap,),
+              child: LapTimesList(
+                lap: _lap,
+              ),
             ),
           ],
         ),
@@ -105,3 +146,16 @@ class _StopwatchAppState extends State<StopwatchApp> {
     );
   }
 }
+
+String formatTime(int milliseconds) {
+  int seconds = (milliseconds / 1000).truncate();
+  int minutes = (seconds / 60).truncate();
+
+  String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+  String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+  String millisecondsStr =
+      (milliseconds % 100).toString().padLeft(2, '0');
+
+  return '$minutesStr:$secondsStr.$millisecondsStr';
+}
+

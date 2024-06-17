@@ -1,40 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/main.dart';
 
 class TextStopwatch extends StatelessWidget {
   const TextStopwatch({
     super.key,
     required this.width,
     required this.fontWeight,
-    required this.min,
-    required this.sec,
-    required this.msec,
+    required this.elapsedTime,
   });
 
   final double width;
   final FontWeight fontWeight;
-  final int min;
-  final int sec;
-  final int msec;
+  final Duration elapsedTime;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: width,
-          child: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(
-              '$min:$sec.$msec',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: fontWeight,
-              ),
-            ),
-          ),
+    return Center(
+      child: Text(
+        formatTime(elapsedTime.inMilliseconds),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: width * 0.23,
+          fontWeight: fontWeight,
         ),
-      ],
+      ),
     );
   }
 }

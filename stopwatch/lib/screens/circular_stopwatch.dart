@@ -8,7 +8,10 @@ import 'package:stopwatch/widgets/dial.dart';
 class CircularStopwatch extends StatelessWidget {
   const CircularStopwatch({
     super.key,
+    required this.elapsedTime,
   });
+
+  final Duration elapsedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +23,7 @@ class CircularStopwatch extends StatelessWidget {
           child: TextStopwatch(
             width: deviceWidth * 0.25,
             fontWeight: FontWeight.w500,
-            min: 30,
-            sec: 55,
-            msec: 27,
+            elapsedTime: elapsedTime,
           ),
         ),
         SecondHand(
@@ -35,6 +36,7 @@ class CircularStopwatch extends StatelessWidget {
         ),
         Dial(
           size: deviceWidth * 0.9,
+          seconds: elapsedTime.inMilliseconds / 1000,
         ),
       ],
     );
