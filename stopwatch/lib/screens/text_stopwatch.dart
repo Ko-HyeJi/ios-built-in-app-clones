@@ -12,17 +12,18 @@ class TextStopwatch extends StatelessWidget {
 
   final double width;
   final FontWeight fontWeight;
-  final Duration elapsedTime;
+  final int elapsedTime;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        formatTime(elapsedTime.inMilliseconds),
+        formattedTime(elapsedTime),
         style: TextStyle(
           color: CustomColors.white,
           fontSize: width * 0.23,
           fontWeight: fontWeight,
+          fontFeatures: const [FontFeature.tabularFigures()],
         ),
       ),
     );

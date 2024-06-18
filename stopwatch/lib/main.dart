@@ -41,39 +41,41 @@ class _StopwatchAppState extends State<StopwatchApp> {
   final _lap = Lap();
 
   final Stopwatch _stopwatch = Stopwatch();
+  final Stopwatch _lapStopwatch = Stopwatch();
   Timer? _timer;
 
   void _startTimer() {
     _stopwatch.start();
-    _timer = Timer.periodic(Duration(milliseconds: 30), (Timer timer) {
+    _lapStopwatch.start();
+    _timer = Timer.periodic(const Duration(milliseconds: 20), (Timer timer) {
       setState(() {});
     });
   }
 
-  void _stopTimer() {
+  void _pauseTimer() {
     _stopwatch.stop();
+    _lapStopwatch.stop();
     _timer?.cancel();
+    setState(() {});
   }
 
   void _resetTimer() {
     _stopwatch.reset();
+    _lapStopwatch.reset();
     _lap.times.clear();
+    _timer?.cancel();
+    _timer = null;
     setState(() {});
   }
 
   void _registerLap() {
-    _lap.times.insert(0, _stopwatch.elapsed.inMilliseconds);
+    _lap.times.add(_lapStopwatch.elapsed.inMilliseconds);
     _lap.minIndex =
         _lap.times.indexOf(_lap.times.reduce((a, b) => a < b ? a : b));
     _lap.maxIndex =
         _lap.times.indexOf(_lap.times.reduce((a, b) => a > b ? a : b));
-  }
-
-  @override
-  void dispose() {
-    _stopwatch.stop();
-    _timer?.cancel();
-    super.dispose();
+    _lapStopwatch.reset();
+    setState(() {});
   }
 
   @override
@@ -98,10 +100,11 @@ class _StopwatchAppState extends State<StopwatchApp> {
                   TextStopwatch(
                     width: deviceWidth * 0.9,
                     fontWeight: FontWeight.w200,
-                    elapsedTime: _stopwatch.elapsed,
+                    elapsedTime: showSlowly(_stopwatch.elapsed.inMilliseconds),
                   ),
                   CircularStopwatch(
-                    elapsedTime: _stopwatch.elapsed,
+                    elapsedTime: _stopwatch.elapsed.inMilliseconds,
+                    lapElapsedTime: _lapStopwatch.elapsed.inMilliseconds,
                   ),
                 ],
               ),
@@ -118,14 +121,14 @@ class _StopwatchAppState extends State<StopwatchApp> {
                         _stopwatch.isRunning ? _registerLap() : _resetTimer();
                       },
                       size: deviceWidth * buttonRatio,
-                      color: CustomColors.grey3,
-                      text: _stopwatch.isRunning ? '랩' : '재설정',
-                      textColor: CustomColors.white,
+                      color: CustomColors.grey3.withOpacity(_timer == null ? 0.5 : 1.0),
+                      text: (_timer == null || _stopwatch.isRunning) ? '랩' : '재설정',
+                      textColor: CustomColors.white.withOpacity(_timer == null ? 0.5 : 1.0),
                     ),
                     PageIndication(pageIndex: _currentPage),
                     CircleButton(
                       onTap: () {
-                        _stopwatch.isRunning ? _stopTimer() : _startTimer();
+                        _stopwatch.isRunning ? _pauseTimer() : _startTimer();
                       },
                       size: deviceWidth * buttonRatio,
                       text: _stopwatch.isRunning ? '중단' : '시작',
@@ -141,7 +144,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
               ),
             ),
             Transform.translate(
-              offset: Offset(0, -deviceWidth * buttonRatio / 4),
+              offset: Offset(0, -deviceWidth * buttonRatio / 2.5),
               child: SizedBox(
                 width: deviceWidth * 0.9,
                 height: deviceHeight -
@@ -150,6 +153,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
                     (deviceHeight * topMargin),
                 child: LapTimesList(
                   lap: _lap,
+                  stopwatch: _lapStopwatch,
                 ),
               ),
             ),
@@ -160,7 +164,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
   }
 }
 
-String formatTime(int milliseconds) {
+String formattedTime(int milliseconds) {
   int seconds = (milliseconds / 1000).truncate();
   int minutes = (seconds / 60).truncate();
 
@@ -169,4 +173,8 @@ String formatTime(int milliseconds) {
   String millisecondsStr = (milliseconds % 100).toString().padLeft(2, '0');
 
   return '$minutesStr:$secondsStr.$millisecondsStr';
+}
+
+int showSlowly(int milliseconds) {
+  return (milliseconds ~/ 73) * 73;
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
-import 'package:stopwatch/main.dart';
-import 'package:stopwatch/models/lap.model.dart';
 
 class LapTimesListRow extends StatelessWidget {
   const LapTimesListRow({
     super.key,
-    required this.lap,
     required this.index,
+    required this.time,
+    required this.color,
   });
 
-  final Lap lap;
   final int index;
+  final String time;
+  final Color color;
+  final fontSize = 18.0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +19,19 @@ class LapTimesListRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          '랩 ${lap.times.length - index}',
+          '랩 ${index + 1}',
           style: TextStyle(
-            color: index == lap.minIndex
-                ? CustomColors.textGreen
-                : index == lap.maxIndex
-                ? CustomColors.textRed
-                : CustomColors.white,
-            fontSize: 18,
+            color: color,
+            fontSize: fontSize,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
         Text(
-          formatTime(lap.times[index]),
+          time,
           style: TextStyle(
-            color: index == lap.minIndex
-                ? CustomColors.textGreen
-                : index == lap.maxIndex
-                ? CustomColors.textRed
-                : CustomColors.white,
-            fontSize: 18,
+            color: color,
+            fontSize: fontSize,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
       ],

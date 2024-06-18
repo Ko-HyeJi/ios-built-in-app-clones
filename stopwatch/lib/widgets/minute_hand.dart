@@ -5,17 +5,22 @@ class MinuteHand extends StatelessWidget {
     super.key,
     required this.radius,
     required this.color,
+    required this.minutes,
   });
 
   final double radius;
   final Color color;
+  final double minutes;
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: MinuteHandPainter(
-        radius: radius,
-        color: color,
+    return RotationTransition(
+      turns: AlwaysStoppedAnimation(minutes / 30),
+      child: CustomPaint(
+        painter: MinuteHandPainter(
+          radius: radius,
+          color: color,
+        ),
       ),
     );
   }

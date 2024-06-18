@@ -8,9 +8,11 @@ class SubDial extends StatelessWidget {
   const SubDial({
     super.key,
     required this.size,
+    required this.minutes,
   });
 
   final double size;
+  final double minutes;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,10 @@ class SubDial extends StatelessWidget {
           children: [
             SubDialMark(radius: size * 0.5),
             SubDialIndex(radius: size * 0.3),
-            RotationTransition(
-              turns: const AlwaysStoppedAnimation(0.65),
-              child: MinuteHand(
-                radius: size * 0.5,
-                color: CustomColors.orange,
-              ),
+            MinuteHand(
+              radius: size * 0.5,
+              color: CustomColors.orange,
+              minutes: minutes,
             ),
           ],
         ),

@@ -10,9 +10,11 @@ class CircularStopwatch extends StatelessWidget {
   const CircularStopwatch({
     super.key,
     required this.elapsedTime,
+    required this.lapElapsedTime,
   });
 
-  final Duration elapsedTime;
+  final int elapsedTime;
+  final int lapElapsedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,12 @@ class CircularStopwatch extends StatelessWidget {
           child: TextStopwatch(
             width: deviceWidth * 0.25,
             fontWeight: FontWeight.w500,
-            elapsedTime: elapsedTime,
+            elapsedTime: showSlowly(elapsedTime),
           ),
         ),
         SubDial(
           size: deviceWidth * 0.27,
+          minutes: elapsedTime / 60000,
         ),
         Dial(
           size: deviceWidth * 0.9,
@@ -36,12 +39,12 @@ class CircularStopwatch extends StatelessWidget {
         SecondHand(
           radius: deviceWidth * 0.9 * 0.5,
           color: CustomColors.blue,
-          seconds: 25.0,
+          seconds: lapElapsedTime / 1000,
         ),
         SecondHand(
           radius: deviceWidth * 0.9 * 0.5,
           color: CustomColors.orange,
-          seconds: elapsedTime.inMilliseconds / 1000,
+          seconds: elapsedTime / 1000,
         ),
       ],
     );
