@@ -41,7 +41,7 @@ class SecondHandPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..color = color
-      ..strokeWidth = radius * 0.01
+      ..strokeWidth = radius * 0.015
       ..style = PaintingStyle.stroke;
 
     var center = const Offset(0, 0);

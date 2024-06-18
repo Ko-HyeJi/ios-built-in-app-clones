@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 import 'package:stopwatch/main.dart';
 import 'package:stopwatch/screens/text_stopwatch.dart';
 import 'package:stopwatch/widgets/second_hand.dart';
@@ -26,16 +27,20 @@ class CircularStopwatch extends StatelessWidget {
             elapsedTime: elapsedTime,
           ),
         ),
-        SecondHand(
-          radius: deviceWidth * 0.9 * 0.5,
-          color: Colors.blueAccent,
-          seconds: 25.0,
-        ),
         SubDial(
           size: deviceWidth * 0.27,
         ),
         Dial(
           size: deviceWidth * 0.9,
+        ),
+        SecondHand(
+          radius: deviceWidth * 0.9 * 0.5,
+          color: CustomColors.blue,
+          seconds: 25.0,
+        ),
+        SecondHand(
+          radius: deviceWidth * 0.9 * 0.5,
+          color: CustomColors.orange,
           seconds: elapsedTime.inMilliseconds / 1000,
         ),
       ],

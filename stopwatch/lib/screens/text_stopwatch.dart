@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 import 'package:stopwatch/main.dart';
 
 class TextStopwatch extends StatelessWidget {
@@ -19,7 +20,7 @@ class TextStopwatch extends StatelessWidget {
       child: Text(
         formatTime(elapsedTime.inMilliseconds),
         style: TextStyle(
-          color: Colors.white,
+          color: CustomColors.white,
           fontSize: width * 0.23,
           fontWeight: fontWeight,
         ),

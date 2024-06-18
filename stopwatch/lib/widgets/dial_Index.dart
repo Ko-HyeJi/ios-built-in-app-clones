@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 
 class DialIndex extends StatelessWidget {
   const DialIndex({
@@ -35,7 +36,7 @@ class DialIndexPainter extends CustomPainter {
         canvas: canvas,
         offset: offset,
         text: (i < 7 ? i * 5 + 30 : i * 5 - 30).toString(),
-        fontSize: radius * 0.18,
+        fontSize: radius * 0.2,
       );
     }
   }
@@ -49,7 +50,7 @@ class DialIndexPainter extends CustomPainter {
     final textSpan = TextSpan(
         text: text,
         style: TextStyle(
-          color: Colors.white,
+          color: CustomColors.white,
           fontSize: fontSize,
           fontWeight: FontWeight.w500,
         ));

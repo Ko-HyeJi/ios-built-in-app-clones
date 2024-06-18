@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 
 class DialMark extends StatelessWidget {
   const DialMark({
@@ -28,20 +29,20 @@ class DialMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()..strokeWidth = radius * 0.01;
+    final Paint paint = Paint()..strokeWidth = radius * 0.012;
 
     const double radiantStep = pi / 240 * 2;
     for (int i = 0; i < 240; i++) {
       if (i % 4 == 0) {
-        lineLength = radius * 0.1;
+        lineLength = radius * 0.08;
       } else {
         lineLength = radius * 0.05;
       }
 
       if (i % 20 == 0) {
-        paint.color = Colors.white;
+        paint.color = CustomColors.white;
       } else {
-        paint.color = Colors.grey;
+        paint.color = CustomColors.grey;
       }
 
       canvas.drawLine(

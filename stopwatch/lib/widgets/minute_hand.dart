@@ -36,7 +36,7 @@ class MinuteHandPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..color = color
-      ..strokeWidth = radius * 0.035
+      ..strokeWidth = radius * 0.05
       ..style = PaintingStyle.fill;
 
     var center = const Offset(0, 0);

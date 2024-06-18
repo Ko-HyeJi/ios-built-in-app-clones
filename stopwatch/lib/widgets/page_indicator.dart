@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 import 'package:stopwatch/main.dart';
 
 class PageIndication extends StatelessWidget {
@@ -11,17 +12,14 @@ class PageIndication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: deviceHeight * 0.15 / 5),
-      child: Row(
-        children: [
-          for (int i = 0; i < 2; i++)
-            IndicatorItem(
-              size: pageIndex == i ? deviceWidth * 0.02 : deviceWidth * 0.015,
-              color: pageIndex == i ? Colors.white : Colors.grey,
-            )
-        ],
-      ),
+    return Row(
+      children: [
+        for (int i = 0; i < 2; i++)
+          IndicatorItem(
+            size: deviceWidth * 0.02,
+            color: pageIndex == i ? CustomColors.white : CustomColors.grey2,
+          )
+      ],
     );
   }
 }
@@ -39,7 +37,7 @@ class IndicatorItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Container(
         width: size,
         height: size,

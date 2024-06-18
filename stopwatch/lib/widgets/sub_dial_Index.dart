@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:stopwatch/custom_colors.dart';
 
 class SubDialIndex extends StatelessWidget {
   const SubDialIndex({
@@ -35,7 +36,7 @@ class SubDialIndexPainter extends CustomPainter {
         canvas: canvas,
         offset: offset,
         text: (i < 4 ? (i * 5 + 15) : i * 5 - 15).toString(),
-        fontSize: radius * 0.4,
+        fontSize: radius * 0.5,
       );
     }
   }
@@ -49,9 +50,9 @@ class SubDialIndexPainter extends CustomPainter {
     final textSpan = TextSpan(
         text: text,
         style: TextStyle(
-          color: Colors.white,
+          color: CustomColors.white,
           fontSize: fontSize,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
         ));
 
     final textPainter = TextPainter()
