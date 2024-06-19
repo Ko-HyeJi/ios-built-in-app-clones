@@ -44,7 +44,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
   final Stopwatch _lapStopwatch = Stopwatch();
   Timer? _timer;
 
-  void _startTimer() {
+  void _startStopwatch() {
     _stopwatch.start();
     _lapStopwatch.start();
     _timer = Timer.periodic(const Duration(milliseconds: 20), (Timer timer) {
@@ -52,14 +52,14 @@ class _StopwatchAppState extends State<StopwatchApp> {
     });
   }
 
-  void _pauseTimer() {
+  void _pauseStopwatch() {
     _stopwatch.stop();
     _lapStopwatch.stop();
     _timer?.cancel();
     setState(() {});
   }
 
-  void _resetTimer() {
+  void _resetStopwatch() {
     _stopwatch.reset();
     _lapStopwatch.reset();
     _lap.times.clear();
@@ -118,17 +118,21 @@ class _StopwatchAppState extends State<StopwatchApp> {
                   children: [
                     CircleButton(
                       onTap: () {
-                        _stopwatch.isRunning ? _registerLap() : _resetTimer();
+                        _stopwatch.isRunning ? _registerLap() : _resetStopwatch();
                       },
                       size: deviceWidth * buttonRatio,
-                      color: CustomColors.grey3.withOpacity(_timer == null ? 0.5 : 1.0),
-                      text: (_timer == null || _stopwatch.isRunning) ? '랩' : '재설정',
-                      textColor: CustomColors.white.withOpacity(_timer == null ? 0.5 : 1.0),
+                      color: CustomColors.grey3
+                          .withOpacity(_timer == null ? 0.5 : 1.0),
+                      text: (_timer == null || _stopwatch.isRunning)
+                          ? '랩'
+                          : '재설정',
+                      textColor: CustomColors.white
+                          .withOpacity(_timer == null ? 0.5 : 1.0),
                     ),
                     PageIndication(pageIndex: _currentPage),
                     CircleButton(
                       onTap: () {
-                        _stopwatch.isRunning ? _pauseTimer() : _startTimer();
+                        _stopwatch.isRunning ? _pauseStopwatch() : _startStopwatch();
                       },
                       size: deviceWidth * buttonRatio,
                       text: _stopwatch.isRunning ? '중단' : '시작',
