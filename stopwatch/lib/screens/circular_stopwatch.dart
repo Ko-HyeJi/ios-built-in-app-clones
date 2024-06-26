@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stopwatch/custom_colors.dart';
-import 'package:stopwatch/main.dart';
 import 'package:stopwatch/screens/text_stopwatch.dart';
+import 'package:stopwatch/services/stopwatch.service.dart';
 import 'package:stopwatch/widgets/second_hand.dart';
 import 'package:stopwatch/widgets/sub_dial.dart';
 import 'package:stopwatch/widgets/dial.dart';
 
 class CircularStopwatch extends StatelessWidget {
-  const CircularStopwatch({
+  final StopwatchService _stopwatch = StopwatchService();
+
+  CircularStopwatch({
     super.key,
-    required this.elapsedTime,
-    required this.lapElapsedTime,
+    required this.width,
   });
 
-  final int elapsedTime;
-  final int lapElapsedTime;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -22,30 +22,41 @@ class CircularStopwatch extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Transform.translate(
-          offset: Offset(0, deviceWidth * 0.18),
+          offset: Offset(0, width * 0.2),
           child: TextStopwatch(
-            width: deviceWidth * 0.25,
+            width: width * 0.28,
             fontWeight: FontWeight.w500,
-            elapsedTime: showSlowly(elapsedTime),
           ),
         ),
-        SubDial(
-          size: deviceWidth * 0.27,
-          minutes: elapsedTime / 60000,
-        ),
+        StreamBuilder<int>(
+            stream: _stopwatch.elapsedTimeStream,
+            builder: (context, snapshot) {
+              return SubDial(
+                size: width * 0.3,
+                minutes: (snapshot.data ?? 0) / 60000,
+              );
+            }),
         Dial(
-          size: deviceWidth * 0.9,
+          size: width,
         ),
-        SecondHand(
-          radius: deviceWidth * 0.9 * 0.5,
-          color: CustomColors.blue,
-          seconds: lapElapsedTime / 1000,
-        ),
-        SecondHand(
-          radius: deviceWidth * 0.9 * 0.5,
-          color: CustomColors.orange,
-          seconds: elapsedTime / 1000,
-        ),
+        StreamBuilder<int>(
+            stream: _stopwatch.lapTimeStream,
+            builder: (context, snapshot) {
+              return SecondHand(
+                radius: width * 0.5,
+                color: CustomColors.blue,
+                seconds: (snapshot.data ?? 0) / 1000,
+              );
+            }),
+        StreamBuilder<int>(
+            stream: _stopwatch.elapsedTimeStream,
+            builder: (context, snapshot) {
+              return SecondHand(
+                radius: width * 0.5,
+                color: CustomColors.orange,
+                seconds: (snapshot.data ?? 0) / 1000,
+              );
+            }),
       ],
     );
   }

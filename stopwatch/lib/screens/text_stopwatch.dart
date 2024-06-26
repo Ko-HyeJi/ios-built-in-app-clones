@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:stopwatch/custom_colors.dart';
 import 'package:stopwatch/main.dart';
+import 'package:stopwatch/services/stopwatch.service.dart';
 
 class TextStopwatch extends StatelessWidget {
-  const TextStopwatch({
+  final StopwatchService _stopwatch = StopwatchService();
+
+  TextStopwatch({
     super.key,
     required this.width,
     required this.fontWeight,
-    required this.elapsedTime,
   });
 
   final double width;
   final FontWeight fontWeight;
-  final int elapsedTime;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        formattedTime(elapsedTime),
-        style: TextStyle(
-          color: CustomColors.white,
-          fontSize: width * 0.23,
-          fontWeight: fontWeight,
-          fontFeatures: const [FontFeature.tabularFigures()],
-        ),
-      ),
+    return StreamBuilder<int>(
+      stream: _stopwatch.elapsedTimeStream,
+      builder: (context, snapshot) {
+        final elapsedTime = snapshot.data ?? 0;
+        return Center(
+          child: Text(
+            formattedTime(showSlowly(elapsedTime)),
+            style: TextStyle(
+              color: CustomColors.white,
+              fontSize: width * 0.23,
+              fontWeight: fontWeight,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        );
+      },
+
     );
   }
 }

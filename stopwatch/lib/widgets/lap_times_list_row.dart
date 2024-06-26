@@ -23,7 +23,7 @@ class LapTimesListRow extends StatelessWidget {
           style: TextStyle(
             color: color,
             fontSize: fontSize,
-            fontFeatures: const [FontFeature.tabularFigures()],
+            fontFeatures: const [FontFeature.tabularFigures()], /// Monospaced Font
           ),
         ),
         Text(

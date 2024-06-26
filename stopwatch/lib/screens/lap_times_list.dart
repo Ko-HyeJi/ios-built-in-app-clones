@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stopwatch/custom_colors.dart';
 import 'package:stopwatch/main.dart';
-import 'package:stopwatch/models/lap.model.dart';
+import 'package:stopwatch/services/stopwatch.service.dart';
 import 'package:stopwatch/widgets/custom_divider.dart';
 import 'package:stopwatch/widgets/lap_times_list_row.dart';
 
 class LapTimesList extends StatelessWidget {
-  const LapTimesList({
-    super.key,
-    required this.lap,
-    required this.stopwatch,
-  });
+  final StopwatchService _stopwatch = StopwatchService();
 
-  final Lap lap;
-  final Stopwatch stopwatch;
+  LapTimesList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,27 +16,33 @@ class LapTimesList extends StatelessWidget {
       child: Column(
         children: [
           const CustomDivider(),
-          if (stopwatch.elapsed.inMilliseconds > 0)
+          if (!_stopwatch.isReset)
             Column(
               children: [
-                LapTimesListRow(
-                  index: lap.times.length,
-                  time: formattedTime(showSlowly(stopwatch.elapsed.inMilliseconds)),
-                  color: CustomColors.white,
+                StreamBuilder<int>(
+                  stream: _stopwatch.elapsedTimeStream,
+                  builder: (context, snapshot) {
+                    return LapTimesListRow(
+                      index: _stopwatch.lapRecord.times.length,
+                      time: formattedTime(
+                          showSlowly(snapshot.data ?? 0)),
+                      color: CustomColors.white,
+                    );
+                  }
                 ),
                 const CustomDivider(),
               ],
             ),
-          if (lap.times.isNotEmpty)
-            for (var i = lap.times.length - 1; i >= 0; i--)
+          if (_stopwatch.lapRecord.times.isNotEmpty)
+            for (var i = _stopwatch.lapRecord.times.length - 1; i >= 0; i--)
               Column(
                 children: [
                   LapTimesListRow(
                     index: i,
-                    time: formattedTime(lap.times[i]),
-                    color: (lap.times.length >= 2 && i == lap.minIndex)
+                    time: formattedTime(_stopwatch.lapRecord.times[i]),
+                    color: (_stopwatch.lapRecord.times.length >= 2 && i == _stopwatch.lapRecord.minIndex)
                         ? CustomColors.textGreen
-                        : (lap.times.length >= 2 && i == lap.maxIndex)
+                        : (_stopwatch.lapRecord.times.length >= 2 && i == _stopwatch.lapRecord.maxIndex)
                             ? CustomColors.textRed
                             : CustomColors.white,
                   ),

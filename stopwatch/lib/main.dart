@@ -2,18 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:stopwatch/custom_colors.dart';
-import 'package:stopwatch/models/lap.model.dart';
 import 'package:stopwatch/services/platform.provider.dart';
 import 'package:stopwatch/screens/circular_stopwatch.dart';
 import 'package:stopwatch/screens/text_stopwatch.dart';
+import 'package:stopwatch/services/stopwatch.service.dart';
 import 'package:stopwatch/widgets/circle_button.dart';
 import 'package:stopwatch/screens/lap_times_list.dart';
 import 'package:stopwatch/widgets/page_indicator.dart';
-
-late final double deviceWidth;
-late final double deviceHeight;
-const buttonRatio = 0.22;
-const topMargin = 0.05;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +24,12 @@ class StopwatchApp extends StatefulWidget {
 }
 
 class _StopwatchAppState extends State<StopwatchApp> {
+  final StopwatchService stopwatch = StopwatchService();
+  late final double deviceWidth;
+  late final double deviceHeight;
+  final buttonRatio = 0.22;
+  final topMargin = 0.05;
+
   @override
   void initState() {
     super.initState();
@@ -38,45 +39,6 @@ class _StopwatchAppState extends State<StopwatchApp> {
 
   final PageController _pageController = PageController(initialPage: 1);
   var _currentPage = 1;
-  final _lap = Lap();
-
-  final Stopwatch _stopwatch = Stopwatch();
-  final Stopwatch _lapStopwatch = Stopwatch();
-  Timer? _timer;
-
-  void _startStopwatch() {
-    _stopwatch.start();
-    _lapStopwatch.start();
-    _timer = Timer.periodic(const Duration(milliseconds: 20), (Timer timer) {
-      setState(() {});
-    });
-  }
-
-  void _pauseStopwatch() {
-    _stopwatch.stop();
-    _lapStopwatch.stop();
-    _timer?.cancel();
-    setState(() {});
-  }
-
-  void _resetStopwatch() {
-    _stopwatch.reset();
-    _lapStopwatch.reset();
-    _lap.times.clear();
-    _timer?.cancel();
-    _timer = null;
-    setState(() {});
-  }
-
-  void _registerLap() {
-    _lap.times.add(_lapStopwatch.elapsed.inMilliseconds);
-    _lap.minIndex =
-        _lap.times.indexOf(_lap.times.reduce((a, b) => a < b ? a : b));
-    _lap.maxIndex =
-        _lap.times.indexOf(_lap.times.reduce((a, b) => a > b ? a : b));
-    _lapStopwatch.reset();
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +62,9 @@ class _StopwatchAppState extends State<StopwatchApp> {
                   TextStopwatch(
                     width: deviceWidth * 0.9,
                     fontWeight: FontWeight.w200,
-                    elapsedTime: showSlowly(_stopwatch.elapsed.inMilliseconds),
                   ),
                   CircularStopwatch(
-                    elapsedTime: _stopwatch.elapsed.inMilliseconds,
-                    lapElapsedTime: _lapStopwatch.elapsed.inMilliseconds,
+                    width: deviceWidth * 0.9,
                   ),
                 ],
               ),
@@ -118,28 +78,34 @@ class _StopwatchAppState extends State<StopwatchApp> {
                   children: [
                     CircleButton(
                       onTap: () {
-                        _stopwatch.isRunning ? _registerLap() : _resetStopwatch();
+                        stopwatch.isRunning
+                            ? stopwatch.lap()
+                            : stopwatch.reset();
+                        setState(() {});
                       },
                       size: deviceWidth * buttonRatio,
                       color: CustomColors.grey3
-                          .withOpacity(_timer == null ? 0.5 : 1.0),
-                      text: (_timer == null || _stopwatch.isRunning)
+                          .withOpacity(stopwatch.isReset ? 0.5 : 1.0),
+                      text: (stopwatch.isReset || stopwatch.isRunning)
                           ? '랩'
                           : '재설정',
                       textColor: CustomColors.white
-                          .withOpacity(_timer == null ? 0.5 : 1.0),
+                          .withOpacity(stopwatch.isReset ? 0.5 : 1.0),
                     ),
-                    PageIndication(pageIndex: _currentPage),
+                    PageIndication(pageIndex: _currentPage, itemSize: deviceWidth * 0.02),
                     CircleButton(
                       onTap: () {
-                        _stopwatch.isRunning ? _pauseStopwatch() : _startStopwatch();
+                        stopwatch.isRunning
+                            ? stopwatch.stop()
+                            : stopwatch.start();
+                        setState(() {});
                       },
                       size: deviceWidth * buttonRatio,
-                      text: _stopwatch.isRunning ? '중단' : '시작',
-                      color: _stopwatch.isRunning
+                      text: stopwatch.isRunning ? '중단' : '시작',
+                      color: stopwatch.isRunning
                           ? CustomColors.red
                           : CustomColors.green,
-                      textColor: _stopwatch.isRunning
+                      textColor: stopwatch.isRunning
                           ? CustomColors.textRed
                           : CustomColors.textGreen,
                     ),
@@ -155,10 +121,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
                     deviceWidth -
                     (deviceWidth * buttonRatio) -
                     (deviceHeight * topMargin),
-                child: LapTimesList(
-                  lap: _lap,
-                  stopwatch: _lapStopwatch,
-                ),
+                child: LapTimesList(),
               ),
             ),
           ],
