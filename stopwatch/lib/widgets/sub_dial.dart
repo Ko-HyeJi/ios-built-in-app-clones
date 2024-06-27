@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 import 'package:stopwatch/widgets/minute_hand.dart';
 import 'package:stopwatch/widgets/sub_dial_Index.dart';
 import 'package:stopwatch/widgets/sub_dial_mark.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 import 'package:stopwatch/main.dart';
 import 'package:stopwatch/services/stopwatch.service.dart';
 
@@ -28,12 +28,11 @@ class TextStopwatch extends StatelessWidget {
               color: CustomColors.white,
               fontSize: width * 0.23,
               fontWeight: fontWeight,
-              fontFeatures: const [FontFeature.tabularFigures()],
+              fontFeatures: const [FontFeature.tabularFigures()], /// Monospaced Font
             ),
           ),
         );
       },
-
     );
   }
 }

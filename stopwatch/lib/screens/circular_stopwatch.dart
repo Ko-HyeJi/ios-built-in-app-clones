@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 import 'package:stopwatch/screens/text_stopwatch.dart';
 import 'package:stopwatch/services/stopwatch.service.dart';
 import 'package:stopwatch/widgets/second_hand.dart';

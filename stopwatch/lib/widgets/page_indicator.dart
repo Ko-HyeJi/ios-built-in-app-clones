@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 import 'package:stopwatch/main.dart';
 
 class PageIndication extends StatelessWidget {
@@ -31,7 +31,7 @@ class PageIndication extends StatelessWidget {
     return Row(
       children: [
         for (int i = 0; i < 2; i++)
-          _buildIndicatorItem(pageIndex == i ? CustomColors.white : CustomColors.grey2)
+          _buildIndicatorItem(pageIndex == i ? CustomColors.white : CustomColors.indicatorGrey)
       ],
     );
   }

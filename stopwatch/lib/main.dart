@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 import 'package:stopwatch/services/platform.provider.dart';
 import 'package:stopwatch/screens/circular_stopwatch.dart';
 import 'package:stopwatch/screens/text_stopwatch.dart';
@@ -84,7 +84,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
                         setState(() {});
                       },
                       size: deviceWidth * buttonRatio,
-                      color: CustomColors.grey3
+                      color: CustomColors.buttonGrey
                           .withOpacity(stopwatch.isReset ? 0.5 : 1.0),
                       text: (stopwatch.isReset || stopwatch.isRunning)
                           ? '랩'
@@ -92,7 +92,8 @@ class _StopwatchAppState extends State<StopwatchApp> {
                       textColor: CustomColors.white
                           .withOpacity(stopwatch.isReset ? 0.5 : 1.0),
                     ),
-                    PageIndication(pageIndex: _currentPage, itemSize: deviceWidth * 0.02),
+                    PageIndication(
+                        pageIndex: _currentPage, itemSize: deviceWidth * 0.02),
                     CircleButton(
                       onTap: () {
                         stopwatch.isRunning
@@ -117,10 +118,7 @@ class _StopwatchAppState extends State<StopwatchApp> {
               offset: Offset(0, -deviceWidth * buttonRatio / 2.5),
               child: SizedBox(
                 width: deviceWidth * 0.9,
-                height: deviceHeight -
-                    deviceWidth -
-                    (deviceWidth * buttonRatio) -
-                    (deviceHeight * topMargin),
+                height: deviceHeight - deviceWidth - (deviceWidth * buttonRatio) - (deviceHeight * topMargin),
                 child: LapTimesList(),
               ),
             ),
@@ -143,5 +141,5 @@ String formattedTime(int milliseconds) {
 }
 
 int showSlowly(int milliseconds) {
-  return (milliseconds ~/ 73) * 73;
+  return (milliseconds ~/ 57) * 57;
 }

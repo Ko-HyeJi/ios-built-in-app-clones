@@ -1,5 +1,5 @@
 class LapRecord {
   var times = [];
-  int? minIndex = 6;
-  int? maxIndex = 7;
+  int? minIndex;
+  int? maxIndex;
 }

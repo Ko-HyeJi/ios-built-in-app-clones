@@ -9,7 +9,7 @@ class CustomDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Divider(
       thickness: 0.2,
-      color: Colors.white30,
+      color: Colors.white54,
     );
   }
 }

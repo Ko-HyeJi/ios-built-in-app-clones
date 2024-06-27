@@ -3,25 +3,19 @@ import 'dart:async';
 import 'package:stopwatch/models/lap_record.model.dart';
 
 class StopwatchService {
-  static final StopwatchService _instance = StopwatchService._internal();
-  factory StopwatchService() {
-    return _instance;
-  }
+  static final _instance = StopwatchService._internal();
+  factory StopwatchService() => _instance;
   StopwatchService._internal();
 
-  final StreamController<int> _elapsedTimeController =
-      StreamController<int>.broadcast();
-  final StreamController<int> _lapTimeController =
-      StreamController<int>.broadcast();
-  final Stopwatch _stopwatch = Stopwatch();
+  final _elapsedTimeController = StreamController<int>.broadcast();
+  final _lapTimeController = StreamController<int>.broadcast();
+  final _stopwatch = Stopwatch();
   Timer? _timer;
-
   int _currentLapStartTime = 0;
   final lapRecord = LapRecord();
 
   Stream<int> get elapsedTimeStream => _elapsedTimeController.stream;
   Stream<int> get lapTimeStream => _lapTimeController.stream;
-
   bool get isRunning => _stopwatch.isRunning;
   bool get isReset => _timer == null;
 
@@ -57,7 +51,7 @@ class StopwatchService {
   }
 
   void lap() {
-    lapRecord.times.add(_stopwatch.elapsedMilliseconds - _currentLapStartTime);
+    lapRecord.times.insert(0, _stopwatch.elapsedMilliseconds - _currentLapStartTime);
     lapRecord.minIndex = lapRecord.times
         .indexOf(lapRecord.times.reduce((a, b) => a < b ? a : b));
     lapRecord.maxIndex = lapRecord.times

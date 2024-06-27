@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:stopwatch/custom_colors.dart';
+import 'package:stopwatch/assets/custom_colors.dart';
 
 class SubDialMark extends StatelessWidget {
   const SubDialMark({
@@ -42,7 +42,7 @@ class SubDialMarkPainter extends CustomPainter {
       if (i % 10 == 0) {
         paint.color = CustomColors.white;
       } else {
-        paint.color = CustomColors.grey;
+        paint.color = CustomColors.dialMarkGrey;
       }
 
       canvas.drawLine(
